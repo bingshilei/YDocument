@@ -343,9 +343,13 @@
     <Content Include="js\jquery-easyui\themes\icons\cancel.png" />
     <Content Include="js\jquery-easyui\themes\icons\cut.png" />
     <Content Include="js\jquery-easyui\themes\icons\dictionary.png" />
+    <Content Include="js\jquery-easyui\themes\icons\doc.png" />
+    <Content Include="js\jquery-easyui\themes\icons\docManage.png" />
+    <Content Include="js\jquery-easyui\themes\icons\document.png" />
     <Content Include="js\jquery-easyui\themes\icons\edit_add.png" />
     <Content Include="js\jquery-easyui\themes\icons\edit_remove.png" />
     <Content Include="js\jquery-easyui\themes\icons\filesave.png" />
+    <Content Include="js\jquery-easyui\themes\icons\folder.png" />
     <Content Include="js\jquery-easyui\themes\icons\help.png" />
     <Content Include="js\jquery-easyui\themes\icons\home.png" />
     <Content Include="js\jquery-easyui\themes\icons\key.png" />
