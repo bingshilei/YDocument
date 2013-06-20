@@ -74,10 +74,12 @@ GO
 --插入系统菜单表基础数据。
 INSERT INTO sys_menus (name,icon) VALUES ('系统设置','icon-systemSetting')
 INSERT INTO sys_menus (name,icon) VALUES ('系统管理','icon-system');
+INSERT INTO sys_menus (name,icon) VALUES ('文档系统','icon-document');
 INSERT INTO sys_menus (name, url, parentID, icon) VALUES ('系统菜单', 'sys/menu/menu_list.aspx', '1', 'icon-systemMenu');
 INSERT INTO sys_menus (name, url, parentID, icon) VALUES ('角色管理', 'sys/role/role_list.aspx', '2','icon-role');
 INSERT INTO sys_menus (name, url, parentID, icon) VALUES ('组织机构管理', 'sys/organization/organization_list.aspx', '2', 'icon-organization');
 INSERT INTO sys_menus (name, url, parentID, icon) VALUES ('数据字典', 'sys/dataDictionary/dataDictionary_list.aspx', '1', 'icon-dictionary');
+INSERT INTO sys_menus (name, url, parentID, icon) VALUES ('文档管理', 'document/document_list.aspx', '3', 'icon-docManage');
 GO
 
 --创建菜单页面关联表。
