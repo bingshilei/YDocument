@@ -97,6 +97,9 @@
 .icon-docManage{
 	background:url('icons/docManage.png') no-repeat;
 }
+.icon-folder{
+	background:url('icons/folder.png') no-repeat;
+}
 .icon-mini-add{
 	background:url('icons/mini_add.png') no-repeat 2px 2px;
 }

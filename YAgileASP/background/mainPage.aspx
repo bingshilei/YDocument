@@ -4,7 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>异类人敏捷开发平台</title>
+    <title>异类人文档管理系统</title>
     <meta http-equiv="pragma" content="no-cache" />
     <meta http-equiv="cache-control" ontent="no-cache">  
     <meta http-equiv="expires" content="0">  
