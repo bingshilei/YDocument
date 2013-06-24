@@ -70,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="background\document\document_list.aspx" />
+    <Content Include="background\document\folder_edit.aspx" />
     <Content Include="background\images\login\login.png" />
     <Content Include="background\images\login\userName.png" />
     <Content Include="background\images\login\userPassword.png" />
@@ -416,6 +417,13 @@
     <Compile Include="background\document\document_list.aspx.designer.cs">
       <DependentUpon>document_list.aspx</DependentUpon>
     </Compile>
+    <Compile Include="background\document\folder_edit.aspx.cs">
+      <DependentUpon>folder_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="background\document\folder_edit.aspx.designer.cs">
+      <DependentUpon>folder_edit.aspx</DependentUpon>
+    </Compile>
     <Compile Include="background\mainPage.aspx.cs">
       <DependentUpon>mainPage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -555,6 +563,15 @@
   <ItemGroup>
     <None Include="js\jquery-easyui\themes\default\images\Thumbs.db" />
     <None Include="js\jquery-easyui\themes\gray\images\Thumbs.db" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\YDocumentDB\YDocumentDB.csproj">
+      <Project>{7877D465-0B29-47A3-9E2F-07ECD2E433A9}</Project>
+      <Name>YDocumentDB</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
