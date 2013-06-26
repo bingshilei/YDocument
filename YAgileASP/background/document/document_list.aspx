@@ -1,5 +1,7 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="document_list.aspx.cs" Inherits="YAgileASP.background.document.document_list" %>
 
+<%@ Register assembly="YAgileControls" namespace="YLR.YAgileControls.PagerControl" tagprefix="cc1" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -105,7 +107,8 @@
         <div class="easyui-layout" data-options="fit:true">
 			<div data-options="region:'north',split:false,border:true" style="height:50px"></div>
 			<div data-options="region:'center',border:true"></div>
-            <div data-options="region:'south',split:false,border:true" style="height:50px">
+            <div data-options="region:'south',split:false,border:true" style="height:30px;text-align:center">
+                <cc1:YPagerControl ID="YPagerControl1" runat="server" />
             </div>
 		</div>
     </div>
