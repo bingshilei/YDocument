@@ -105,9 +105,9 @@
     </div>
     <div id="center" region="center" title="文档" iconCls="icon-doc" style="padding:1px;background-color:#EEF5FD">
         <div class="easyui-layout" data-options="fit:true">
-			<div data-options="region:'north',split:false,border:true" style="height:50px"></div>
-			<div data-options="region:'center',border:true"></div>
-            <div data-options="region:'south',split:false,border:true" style="height:30px;text-align:center">
+			<div data-options="region:'north',split:false,border:true" style="height:50px;padding:1px;background-color:#EEF5FD"></div>
+			<div data-options="region:'center',border:true" style="padding:1px;background-color:#EEF5FD"></div>
+            <div data-options="region:'south',split:false,border:true" style="height:30px;text-align:center;padding:1px;background-color:#EEF5FD">
                 <cc1:YPagerControl ID="YPagerControl1" runat="server" />
             </div>
 		</div>
