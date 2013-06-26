@@ -27,6 +27,38 @@ namespace YAgileASP.background.document
                 {
                     this.hidParentId.Value = "-1";
                 }
+
+                //获取id
+                string strId = Request.QueryString["id"];
+                if (!string.IsNullOrEmpty(strId))
+                {
+                    this.hidCatalogId.Value = strId;
+
+                    //获取配置文件路径。
+                    string configFile = AppDomain.CurrentDomain.BaseDirectory.ToString() + SystemConfig.databaseConfigFileName;
+
+                    //创建操作对象
+                    DocOper docOper = DocOper.createDocOper(configFile, SystemConfig.databaseConfigNodeName, SystemConfig.configFileKey);
+                    if (docOper != null)
+                    {
+                        ////获取字典项信息
+                        CatalogInfo catalog = docOper.getGatalog(Convert.ToInt32(strId));
+                        if (catalog != null)
+                        {
+                            this.txtCatalogName.Value = catalog.name;
+                        }
+                        else
+                        {
+                            YMessageBox.show(this, "获取目录信息失败！错误信息[" + docOper.errorMessage + "]");
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        YMessageBox.show(this, "创建数据库操作对象失败！");
+                        return;
+                    }
+                }
             }
         }
 
@@ -76,7 +108,7 @@ namespace YAgileASP.background.document
                         }
                         else
                         {
-                            YMessageBox.show(this, "创建机构失败！错误信息：[" + docOper.errorMessage + "]");
+                            YMessageBox.show(this, "创建目录失败！错误信息：[" + docOper.errorMessage + "]");
                             return;
                         }
                     }
@@ -84,15 +116,15 @@ namespace YAgileASP.background.document
                     {
                         //修改
                         catalog.id = Convert.ToInt32(this.hidCatalogId.Value);
-                        //if (docOper.changeDataDictionary(dataDicInfo))
-                        //{
-                        //    YMessageBox.showAndResponseScript(this, "保存成功！", "", "window.parent.menuButtonOnClick('数据字典','icon-dictionary','sys/dataDictionary/dataDictionary_list.aspx?parentId=" + this.hidParentId.Value + "');window.parent.closePopupsWindow('#popups');");
-                        //}
-                        //else
-                        //{
-                        //    YMessageBox.show(this, "修改字典项失败！错误信息：[" + docOper.errorMessage + "]");
-                        //    return;
-                        //}
+                        if (docOper.changeCatalog(catalog))
+                        {
+                            YMessageBox.showAndResponseScript(this, "保存成功！", "", "window.parent.menuButtonOnClick('文档管理','icon-docManage','document/document_list.aspx?parentId=" + this.hidParentId.Value + "');window.parent.closePopupsWindow('#popups');");
+                        }
+                        else
+                        {
+                            YMessageBox.show(this, "修改目录失败！错误信息：[" + docOper.errorMessage + "]");
+                            return;
+                        }
                     }
                 }
                 else

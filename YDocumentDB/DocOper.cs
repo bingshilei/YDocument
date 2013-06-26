@@ -380,5 +380,66 @@ namespace YLR.YDocumentDB
 
             return catalogs;
         }
+
+        /// <summary>
+        /// 修改指定目录的信息，通过目录id匹配。
+        /// </summary>
+        /// <param name="catalog">要修改的字典项。</param>
+        /// <returns>成功返回true，否则返回false。</returns>
+        public bool changeCatalog(CatalogInfo catalog)
+        {
+            bool bRet = false; //返回值
+
+            try
+            {
+                if (this._docDataBase != null)
+                {
+                    //连接数据库
+                    if (this._docDataBase.connectDataBase())
+                    {
+                        //sql语句
+                        string sql = "";
+                        YParameters par = new YParameters();
+                        par.add("@catalogId", catalog.id);
+                        par.add("@catalogName", catalog.name);
+
+                        sql = "UPDATE DOC_CATALOG SET NAME = @catalogName WHERE ID = @catalogId";
+
+                        int retCount = this._docDataBase.executeSqlWithOutDs(sql, par);
+                        if (retCount == 1)
+                        {
+                            bRet = true;
+                        }
+                        else
+                        {
+                            this._errorMessage = "更新数据失败！";
+                            if (retCount != 1)
+                            {
+                                this._errorMessage += "错误信息[" + this._docDataBase.errorText + "]";
+                            }
+                        }
+                    }
+                    else
+                    {
+                        this._errorMessage = "连接数据库出错！错误信息[" + this._docDataBase.errorText + "]";
+                    }
+
+                }
+                else
+                {
+                    this._errorMessage = "未设置数据库实例！";
+                }
+            }
+            catch (Exception ex)
+            {
+                this._errorMessage = ex.Message;
+            }
+            finally
+            {
+                this._docDataBase.disconnectDataBase();
+            }
+
+            return bRet;
+        }
     }
 }

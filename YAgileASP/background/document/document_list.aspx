@@ -27,11 +27,31 @@
          * \brief
          * 新增目录。
          */
-        function addFolder()
+        function addCatalog()
         {
             window.parent.popupsWindow("#popups", "新增目录", 600, 120, "document/catalog_edit.aspx?parentId=" + +$("#hidParentId").val(), "icon-add", true, true);
         }
 
+        /*!
+         * \brief
+         * 编辑目录。
+         */
+        function editCatalog()
+        {
+            //判断选中
+            if ($("input:checked[type='checkbox'][name='chkCatalog']").length != 1)
+            {
+                alert("请选中要编辑的目录项，一次只能选择一个！");
+                return;
+            }
+
+            window.parent.popupsWindow("#popups", "编辑目录", 600, 120, "document/catalog_edit.aspx?parentId=" + +$("#hidParentId").val() + "&id=" + $("input:checked[type='checkbox'][name='chkCatalog']").eq(0).val(), "icon-edit", true, true);
+        }
+
+        /*!
+         * \brief
+         * 返回上级目录。
+         */
         function returnParent()
         {
             window.parent.menuButtonOnClick('文档管理', 'icon-docManage', 'document/document_list.aspx?parentId=' + $("#hidReturnId").val()); 
@@ -76,8 +96,8 @@
             </table>
         </div>
         <div id="folderButton">
-		    <a href="javascript:void(0)" class="icon-add" onclick="javascript:addFolder()"></a>
-		    <a href="javascript:void(0)" class="icon-edit" onclick="javascript:alert('edit')"></a>
+		    <a href="javascript:void(0)" class="icon-add" onclick="javascript:addCatalog()"></a>
+		    <a href="javascript:void(0)" class="icon-edit" onclick="javascript:editCatalog()"></a>
 		    <a href="javascript:void(0)" class="icon-cancel" onclick="javascript:alert('cut')"></a>
 	    </div>
     </div>
