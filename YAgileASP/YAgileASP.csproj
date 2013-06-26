@@ -69,8 +69,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="background\document\catalog_edit.aspx" />
     <Content Include="background\document\document_list.aspx" />
-    <Content Include="background\document\folder_edit.aspx" />
     <Content Include="background\images\login\login.png" />
     <Content Include="background\images\login\userName.png" />
     <Content Include="background\images\login\userPassword.png" />
@@ -410,19 +410,19 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="background\document\catalog_edit.aspx.cs">
+      <DependentUpon>catalog_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="background\document\catalog_edit.aspx.designer.cs">
+      <DependentUpon>catalog_edit.aspx</DependentUpon>
+    </Compile>
     <Compile Include="background\document\document_list.aspx.cs">
       <DependentUpon>document_list.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="background\document\document_list.aspx.designer.cs">
       <DependentUpon>document_list.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="background\document\folder_edit.aspx.cs">
-      <DependentUpon>folder_edit.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="background\document\folder_edit.aspx.designer.cs">
-      <DependentUpon>folder_edit.aspx</DependentUpon>
     </Compile>
     <Compile Include="background\mainPage.aspx.cs">
       <DependentUpon>mainPage.aspx</DependentUpon>

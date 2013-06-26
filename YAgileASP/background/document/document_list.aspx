@@ -6,8 +6,8 @@
 <head runat="server">
     <title>文档管理</title>
     <meta http-equiv="pragma" content="no-cache" />
-    <meta http-equiv="cache-control" ontent="no-cache">  
-    <meta http-equiv="expires" content="0">  
+    <meta http-equiv="cache-control" ontent="no-cache" />  
+    <meta http-equiv="expires" content="0" />  
 
     <style type="text/css">
         html,body{ height:100%;}
@@ -28,7 +28,7 @@
          */
         function addFolder()
         {
-            window.parent.popupsWindow("#popups", "新增目录", 600, 120, "document/folder_edit.aspx?parentId=", "icon-add", true, true);
+            window.parent.popupsWindow("#popups", "新增目录", 600, 120, "document/catalog_edit.aspx?parentId=" + +$("#hidParentId").val(), "icon-add", true, true);
         }
 
         /*!
@@ -49,6 +49,7 @@
 </head>
 <body  style="width:100%;margin:0px;background-color:#EEF5FD;">
     <form id="form1" runat="server" class="easyui-layout" flt="true" style="width:100%;height:100%;margin:0px;background-color:#EEF5FD;">
+    <input type="hidden" name="hidParentId" id="hidParentId" runat="server" value="-1" />
     <div region="west" style="width:250px;padding:0px;background-color:#EEF5FD">
         <div class="easyui-panel" iconCls="icon-folder" title="目录" tools="#folderButton" flt="true" border="false">
         sdfdsf

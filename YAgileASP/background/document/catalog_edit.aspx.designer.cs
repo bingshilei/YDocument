@@ -10,7 +10,7 @@
 namespace YAgileASP.background.document {
     
     
-    public partial class document_list {
+    public partial class catalog_edit {
         
         /// <summary>
         /// form1 控件。
@@ -22,6 +22,15 @@ namespace YAgileASP.background.document {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
+        /// hidCatalogId 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputHidden hidCatalogId;
+        
+        /// <summary>
         /// hidParentId 控件。
         /// </summary>
         /// <remarks>
@@ -29,5 +38,23 @@ namespace YAgileASP.background.document {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputHidden hidParentId;
+        
+        /// <summary>
+        /// txtCatalogName 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txtCatalogName;
+        
+        /// <summary>
+        /// A1 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor A1;
     }
 }
