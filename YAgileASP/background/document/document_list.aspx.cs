@@ -12,6 +12,8 @@ namespace YAgileASP.background.document
 {
     public partial class document_list : System.Web.UI.Page
     {
+        protected string _catalogName = "/"; //目录名称
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!this.IsPostBack)
@@ -49,11 +51,13 @@ namespace YAgileASP.background.document
                     if (this.hidParentId.Value == "-1")
                     {
                         this.backButton.Disabled = true;
+                        this.backButton.InnerText = "/";
                     }
                     else
                     {
                         CatalogInfo catalog = docOper.getGatalog(Convert.ToInt32(this.hidParentId.Value));
-                        this.backButton.InnerText = catalog.name;
+                        this.backButton.InnerText = "/" + catalog.name;
+                        this._catalogName += catalog.name;
                         this.hidReturnId.Value = catalog.parentId.ToString();
                     }
 

@@ -80,7 +80,7 @@
     <input type="hidden" name="hidParentId" id="hidParentId" runat="server" value="-1" />
     <input type="hidden" name="hidReturnId" id="hidReturnId" runat="server" value="-1" />
     <div region="west" style="width:250px;padding:0px;background-color:#EEF5FD">
-        <div class="easyui-panel" iconCls="icon-folder" title="目录" tools="#folderButton" flt="true" border="false" style="padding:2px;background-color:#EEF5FD">
+        <div class="easyui-panel" title="目录列表" tools="#folderButton" flt="true" border="false" style="padding:2px;background-color:#EEF5FD">
             <table class="listTable" style="width:245px">
                 <tr style="width:100%">
                     <td colspan="2"><a href="#" class="easyui-linkbutton" id="backButton" name="backButton" runat="server" iconCls="icon-back" plain="true" style="width:234px" onclick="javascript:returnParent();"></a></td>
@@ -103,7 +103,7 @@
 		    <a href="javascript:void(0)" class="icon-cancel" onclick="javascript:alert('cut')"></a>
 	    </div>
     </div>
-    <div id="center" region="center" title="文档" iconCls="icon-doc" style="padding:1px;background-color:#EEF5FD">
+    <div id="center" region="center" title="<%=_catalogName%>" iconCls="icon-folder" style="padding:1px;background-color:#EEF5FD">
         <div class="easyui-layout" data-options="fit:true">
 			<div data-options="region:'north',split:false,border:true" style="height:50px;padding:1px;background-color:#EEF5FD"></div>
 			<div data-options="region:'center',border:true" style="padding:1px;background-color:#EEF5FD"></div>
