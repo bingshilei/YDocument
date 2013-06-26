@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using YLR.YAdoNet;
 using System.Data;
+using YLR.YSystem.Organization;
 
 namespace YLR.YDocumentDB
 {
@@ -135,17 +136,17 @@ namespace YLR.YDocumentDB
                                 case DataBaseType.SQL2005:
                                 case DataBaseType.SQL2008:
                                     {
-                                        sql = "INSERT INTO DOC_CATALOG (NAME,USERID,PARENTID) VALUES (@catalogName,@parentId,@userId) SELECT SCOPE_IDENTITY() AS id";
+                                        sql = "INSERT INTO DOC_CATALOG (NAME,USERID,PARENTID) VALUES (@catalogName,@userId,@parentId) SELECT SCOPE_IDENTITY() AS id";
                                         break;
                                     }
                                 case DataBaseType.SQLite:
                                     {
-                                        sql = "INSERT INTO DOC_CATALOG (NAME,USERID,PARENTID,VALUE) VALUES (@catalogName,@parentId,@userId);SELECT LAST_INSERT_ROWID() AS id;";
+                                        sql = "INSERT INTO DOC_CATALOG (NAME,USERID,PARENTID,VALUE) VALUES (@catalogName,@userId,@parentId);SELECT LAST_INSERT_ROWID() AS id;";
                                         break;
                                     }
                                 default:
                                     {
-                                        sql = "INSERT INTO DOC_CATALOG (NAME,USERID,PARENTID) VALUES (@catalogName,@parentId,@userId) SELECT SCOPE_IDENTITY() AS id";
+                                        sql = "INSERT INTO DOC_CATALOG (NAME,USERID,PARENTID) VALUES (@catalogName,@userId,@parentId) SELECT SCOPE_IDENTITY() AS id";
                                         break;
                                     }
                             }
@@ -183,6 +184,201 @@ namespace YLR.YDocumentDB
             }
 
             return catalogId;
+        }
+
+        /// <summary>
+        /// 通过DataRow数据构建目录对象。
+        /// 作者：董帅 创建时间：2013-6-26 13:56:31
+        /// </summary>
+        /// <param name="r">数据行。</param>
+        /// <returns>成功返回对象，失败返回null。</returns>
+        private CatalogInfo getGatalogFromDataRow(DataRow r)
+        {
+            CatalogInfo catalog = null;
+
+            if (r != null)
+            {
+                catalog = new CatalogInfo();
+                //菜单id不能为null，否则返回失败。
+                if (!r.IsNull("ID"))
+                {
+                    catalog.id = Convert.ToInt32(r["ID"]);
+                }
+                else
+                {
+                    return null;
+                }
+
+                if (!r.IsNull("NAME"))
+                {
+                    catalog.name = r["NAME"].ToString();
+                }
+
+                if (!r.IsNull("PARENTID"))
+                {
+                    catalog.parentId = Convert.ToInt32(r["PARENTID"]);
+                }
+                else
+                {
+                    catalog.parentId = -1;
+                }
+
+                if (!r.IsNull("CREATETIME"))
+                {
+                    catalog.createTime = Convert.ToDateTime(r["CREATETIME"]);
+                }
+
+                if (!r.IsNull("USERID"))
+                {
+                    int userId = Convert.ToInt32(r["USERID"]);
+                    //获取用户信息。
+                    if (userId > 0)
+                    {
+                        OrgOperater orgOper = new OrgOperater();
+                        catalog.user = orgOper.getUser(userId, this._docDataBase);
+                    }
+                }
+            }
+
+            return catalog;
+        }
+
+        /// <summary>
+        /// 获取指定的目录列表。
+        /// 作者：董帅 创建时间：2013-6-26 14:17:53
+        /// </summary>
+        /// <param name="id">目录id。</param>
+        /// <returns>成功返回目录列表，出错返回null。</returns>
+        public CatalogInfo getGatalog(int id)
+        {
+            CatalogInfo catalog = null;
+
+            try
+            {
+                if (this._docDataBase != null)
+                {
+                    //连接数据库
+                    if (this._docDataBase.connectDataBase())
+                    {
+
+                        //sql语句，获取所有字典
+                        string sql = "";
+                        YParameters par = new YParameters();
+                        par.add("@id", id);
+                        sql = "SELECT * FROM DOC_CATALOG WHERE ID = @id";
+                        
+                        //获取数据
+                        DataTable dt = this._docDataBase.executeSqlReturnDt(sql, par);
+                        if (dt != null && dt.Rows.Count > 0)
+                        {
+                            catalog = this.getGatalogFromDataRow(dt.Rows[0]);
+
+                            //获取用户信息。
+                            if (catalog != null && catalog.user.id > 0)
+                            {
+                                OrgOperater orgOper = new OrgOperater();
+                                catalog.user = orgOper.getUser(catalog.user.id, this._docDataBase);
+                            }
+                        }
+                        else
+                        {
+                            this._errorMessage = "获取数据失败！错误信息：[" + this._docDataBase.errorText + "]";
+                        }
+                    }
+                    else
+                    {
+                        this._errorMessage = "连接数据库失败！错误信息：[" + this._docDataBase.errorText + "]";
+                    }
+                }
+                else
+                {
+                    this._errorMessage = "未设置数据库实例！";
+                }
+            }
+            catch (Exception ex)
+            {
+                this._errorMessage = ex.Message;
+            }
+            finally
+            {
+                this._docDataBase.disconnectDataBase();
+            }
+
+            return catalog;
+        }
+
+        /// <summary>
+        /// 获取指定父id的目录列表。
+        /// 作者：董帅 创建时间：2013-6-26 13:51:59
+        /// </summary>
+        /// <param name="pId">父id，顶级目录为-1。</param>
+        /// <returns>成功返回目录列表，出错返回null。</returns>
+        public List<CatalogInfo> getGatalogsByParentId(int pId)
+        {
+            List<CatalogInfo> catalogs = null;
+
+            try
+            {
+                if (this._docDataBase != null)
+                {
+                    //连接数据库
+                    if (this._docDataBase.connectDataBase())
+                    {
+
+                        //sql语句，获取所有字典
+                        string sql = "";
+                        YParameters par = new YParameters();
+                        par.add("@parentId", pId);
+                        if (pId == -1)
+                        {
+                            sql = "SELECT * FROM DOC_CATALOG WHERE PARENTID IS NULL";
+                        }
+                        else
+                        {
+                            sql = "SELECT * FROM DOC_CATALOG WHERE PARENTID = @parentId";
+                        }
+                        //获取数据
+                        DataTable dt = this._docDataBase.executeSqlReturnDt(sql, par);
+                        if (dt != null)
+                        {
+                            catalogs = new List<CatalogInfo>();
+                            foreach (DataRow r in dt.Rows)
+                            {
+                                CatalogInfo c = this.getGatalogFromDataRow(r);
+
+                                
+
+                                if (c != null)
+                                {
+                                    catalogs.Add(c);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            this._errorMessage = "获取数据失败！错误信息：[" + this._docDataBase.errorText + "]";
+                        }
+                    }
+                    else
+                    {
+                        this._errorMessage = "连接数据库失败！错误信息：[" + this._docDataBase.errorText + "]";
+                    }
+                }
+                else
+                {
+                    this._errorMessage = "未设置数据库实例！";
+                }
+            }
+            catch (Exception ex)
+            {
+                this._errorMessage = ex.Message;
+            }
+            finally
+            {
+                this._docDataBase.disconnectDataBase();
+            }
+
+            return catalogs;
         }
     }
 }

@@ -15,6 +15,7 @@
 
     <link href="../../js/jquery-easyui/themes/icon.css" rel="stylesheet" type="text/css" />
     <link href="../../js/jquery-easyui/themes/default/easyui.css" rel="stylesheet" type="text/css" />
+    <link href="../../css/table.css" rel="Stylesheet" type="text/css" />
 
     <script type="text/javascript" src="../../js/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="../../js/jquery-easyui/jquery.easyui.min.js"></script>
@@ -29,6 +30,11 @@
         function addFolder()
         {
             window.parent.popupsWindow("#popups", "新增目录", 600, 120, "document/catalog_edit.aspx?parentId=" + +$("#hidParentId").val(), "icon-add", true, true);
+        }
+
+        function returnParent()
+        {
+            window.parent.menuButtonOnClick('文档管理', 'icon-docManage', 'document/document_list.aspx?parentId=' + $("#hidReturnId").val()); 
         }
 
         /*!
@@ -50,9 +56,24 @@
 <body  style="width:100%;margin:0px;background-color:#EEF5FD;">
     <form id="form1" runat="server" class="easyui-layout" flt="true" style="width:100%;height:100%;margin:0px;background-color:#EEF5FD;">
     <input type="hidden" name="hidParentId" id="hidParentId" runat="server" value="-1" />
+    <input type="hidden" name="hidReturnId" id="hidReturnId" runat="server" value="-1" />
     <div region="west" style="width:250px;padding:0px;background-color:#EEF5FD">
         <div class="easyui-panel" iconCls="icon-folder" title="目录" tools="#folderButton" flt="true" border="false">
-        sdfdsf
+            <table class="listTable" style="width:220px">
+                <tr style="width:100%">
+                    <td colspan="2"><a href="#" class="easyui-linkbutton" id="backButton" name="backButton" runat="server" iconCls="icon-back" plain="true" style="width:220px" onclick="javascript:returnParent();"></a></td>
+                </tr>
+                <asp:Repeater ID="catalogList" runat="server">
+                    <ItemTemplate>
+                        <tr class="tableBody1">
+                            <td style="text-align:center;"><input type="checkbox" value="<%#Eval("ID") %>" name="chkCatalog" /></td>
+                            <td style="width:auto">
+                                <a href="document_list.aspx?parentId=<%#Eval("ID") %>" class="easyui-linkbutton" iconCls="icon-folder" id="<%#Eval("ID") %>" plain="true" style="width:200px" ><%#Eval("NAME")%></a>
+                            </td>
+                        </tr>
+                    </ItemTemplate>
+                    </asp:Repeater>
+            </table>
         </div>
         <div id="folderButton">
 		    <a href="javascript:void(0)" class="icon-add" onclick="javascript:addFolder()"></a>

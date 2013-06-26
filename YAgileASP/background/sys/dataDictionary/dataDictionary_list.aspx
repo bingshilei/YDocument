@@ -115,7 +115,7 @@
     </div>
     <div style="width:600px;margin:0px auto">
         <table class="listTable" style="width:100%">
-            <tr class="tableHead"">
+            <tr class="tableHead">
                 <th style="width:30px">选择</th>
                 <th style="width:auto">名称</th>
                 <th style="width:50px">数值</th>

@@ -353,6 +353,15 @@
             <param name="id">用户id</param>
             <returns>成功返回用户，否则返回null。</returns>
         </member>
+        <member name="M:YLR.YSystem.Organization.OrgOperater.getUser(System.Int32,YLR.YAdoNet.YDataBase)">
+            <summary>
+            从指定的数据库连接获取用户信息。
+            作者：董帅 创建时间：2013-6-26 14:04:32
+            </summary>
+            <param name="id">用户id。</param>
+            <param name="db">指定的数据库连接，使用时确保数据连接已打开。</param>
+            <returns>用户信息，失败返回null。</returns>
+        </member>
         <member name="M:YLR.YSystem.Organization.OrgOperater.getUser(System.String,System.String)">
             <summary>
             根据登录名和密码获取用户信息，如果存在多个用户则返回id小的。

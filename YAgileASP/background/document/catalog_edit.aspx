@@ -44,10 +44,10 @@
     <input type="hidden" name="hidCatalogId" id="hidCatalogId" runat="server" value="" />
     <input type="hidden" name="hidParentId" id="hidParentId" runat="server" value="" />
     <div id="center" region="center" style="padding:1px;background-color:#EEF5FD">
-        <table class="admintable" style="width:100%;">
-            <tr style="height:30px">
-                <th class="adminth_s2" style="width:120px;text-align:right">名称：</th>
-                <td bgcolor="#FFFFFF"><input type="text" id="txtCatalogName" name="txtCatalogName" class="easyui-validatebox" required="true" maxlength="100" runat="server" style="width:200px" /></td>
+        <table class="editTable" style="width:100%;">
+            <tr>
+                <th style="width:120px">名称：</th>
+                <td><input type="text" id="txtCatalogName" name="txtCatalogName" class="easyui-validatebox" required="true" maxlength="100" runat="server" style="width:200px" /></td>
             </tr>
         </table>
     </div>
