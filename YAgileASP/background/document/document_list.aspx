@@ -78,17 +78,17 @@
     <input type="hidden" name="hidParentId" id="hidParentId" runat="server" value="-1" />
     <input type="hidden" name="hidReturnId" id="hidReturnId" runat="server" value="-1" />
     <div region="west" style="width:250px;padding:0px;background-color:#EEF5FD">
-        <div class="easyui-panel" iconCls="icon-folder" title="目录" tools="#folderButton" flt="true" border="false">
-            <table class="listTable" style="width:220px">
+        <div class="easyui-panel" iconCls="icon-folder" title="目录" tools="#folderButton" flt="true" border="false" style="padding:2px;background-color:#EEF5FD">
+            <table class="listTable" style="width:245px">
                 <tr style="width:100%">
-                    <td colspan="2"><a href="#" class="easyui-linkbutton" id="backButton" name="backButton" runat="server" iconCls="icon-back" plain="true" style="width:220px" onclick="javascript:returnParent();"></a></td>
+                    <td colspan="2"><a href="#" class="easyui-linkbutton" id="backButton" name="backButton" runat="server" iconCls="icon-back" plain="true" style="width:234px" onclick="javascript:returnParent();"></a></td>
                 </tr>
                 <asp:Repeater ID="catalogList" runat="server">
                     <ItemTemplate>
                         <tr class="tableBody1">
                             <td style="text-align:center;"><input type="checkbox" value="<%#Eval("ID") %>" name="chkCatalog" /></td>
                             <td style="width:auto">
-                                <a href="document_list.aspx?parentId=<%#Eval("ID") %>" class="easyui-linkbutton" iconCls="icon-folder" id="<%#Eval("ID") %>" plain="true" style="width:200px" ><%#Eval("NAME")%></a>
+                                <a href="document_list.aspx?parentId=<%#Eval("ID") %>" class="easyui-linkbutton" iconCls="icon-folder" id="<%#Eval("ID") %>" plain="true" style="width:210px" ><%#Eval("NAME")%></a>
                             </td>
                         </tr>
                     </ItemTemplate>

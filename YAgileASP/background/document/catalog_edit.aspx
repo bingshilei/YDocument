@@ -25,6 +25,21 @@
     <script type="text/javascript">
         /*!
         * \brief
+        * 验证表单。
+        * 作者：董帅 创建时间：2012-8-28 17:26:01
+        */
+        function checkForms()
+        {
+            if (!$("#txtCatalogName").validatebox("isValid"))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        /*!
+        * \brief
         * 动态调整layout。
         */
         $(function ()
