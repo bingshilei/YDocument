@@ -100,6 +100,9 @@
 .icon-folder{
 	background:url('icons/folder.png') no-repeat;
 }
+.icon-editorDocument{
+	background:url('icons/editorDocument.png') no-repeat;
+}
 .icon-mini-add{
 	background:url('icons/mini_add.png') no-repeat 2px 2px;
 }

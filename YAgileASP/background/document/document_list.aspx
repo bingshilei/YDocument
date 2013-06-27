@@ -121,9 +121,56 @@
                     <a id="A1" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel',plain:true" onclick="javascript:return deleteDataDictionarys();" runat="server">删除</a>
                 </div>
             </div>
-			<div data-options="region:'center',border:true" style="padding:1px;background-color:#EEF5FD"></div>
+			<div data-options="region:'center',border:true" style="padding:1px;background-color:#EEF5FD">
+                <table class="listTable" style="width:100%">
+                    <tr class="tableHead">
+                        <th style="width:30px">选择</th>
+                        <th style="width:auto">标题</th>
+                        <th style="width:50px">作者</th>
+                        <th style="width:150px">创建时间</th>
+                        <th style="width:100px">编辑</th>
+                    </tr>
+                <asp:Repeater ID="documentList" runat="server">
+                <ItemTemplate>
+                    <tr class="tableBody1">
+                        <td style="text-align:center;"><input type="checkbox" value="<%#Eval("ID") %>" name="chkDocument" /></td>
+                        <td style="width:auto">
+                            <a href="dataDictionary_list.aspx?parentId=<%#Eval("ID") %>" class="easyui-linkbutton" data-options="iconCls:'icon-doc',plain:true" id="<%#Eval("ID") %>" style="width:99%" ><%#Eval("TITLE")%></a>
+                        </td>
+                        <td style="text-align:center">
+                            <%#Eval("user.name")%>
+                        </td>
+                        <td style="text-align:center">
+                            <%#Eval("CREATETIME","{0:yyyy-MM-dd HH:mm:ss}")%>
+                        </td>
+                        <td style="text-align:center">
+                            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-editorDocument'" onclick="javascript:addDocument();">编辑</a>
+                        </td>
+                    </tr>
+                </ItemTemplate>
+                <AlternatingItemTemplate>
+                    <tr class="tableBody2">
+                        <td style="text-align:center;"><input type="checkbox" value="<%#Eval("ID") %>" name="chkDocument" /></td>
+                        <td style="width:auto">
+                            <a href="dataDictionary_list.aspx?parentId=<%#Eval("ID") %>" class="easyui-linkbutton" data-options="iconCls:'icon-doc',plain:true" id="<%#Eval("ID") %>" style="width:99%" ><%#Eval("TITLE")%></a>
+                        </td>
+                        <td style="text-align:center">
+                            <%#Eval("user.name")%>
+                        </td>
+                        <td style="text-align:center">
+                            <%#Eval("CREATETIME","{0:yyyy-MM-dd HH:mm:ss}")%>
+                        </td>
+                        <td style="text-align:center">
+                            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-editorDocument'" onclick="javascript:addDocument();">编辑</a>
+                        </td>
+                    </tr>
+                </AlternatingItemTemplate>
+                </asp:Repeater>
+                </table>
+            </div>
             <div data-options="region:'south',split:false,border:true" style="height:30px;text-align:center;padding:1px;background-color:#EEF5FD">
-                <cc1:YPagerControl ID="YPagerControl1" runat="server" />
+                <cc1:YPagerControl ID="YPagerControl1" runat="server" 
+                    onpagechanged="YPagerControl1_PageChanged" />
             </div>
 		</div>
     </div>

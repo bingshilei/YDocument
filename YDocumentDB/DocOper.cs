@@ -311,7 +311,7 @@ namespace YLR.YDocumentDB
         /// 获取指定父id的目录列表。
         /// 作者：董帅 创建时间：2013-6-26 13:51:59
         /// </summary>
-        /// <param name="pId">父id，顶级目录为-1。</param>
+        /// <param name="catalogId">父id，顶级目录为-1。</param>
         /// <returns>成功返回目录列表，出错返回null。</returns>
         public List<CatalogInfo> getGatalogsByParentId(int pId)
         {
@@ -553,6 +553,137 @@ namespace YLR.YDocumentDB
             }
 
             return documentId;
+        }
+
+        /// <summary>
+        /// 通过DataRow数据构建文档对象。
+        /// 作者：董帅 创建时间：2013-6-27 15:27:35
+        /// </summary>
+        /// <param name="r">数据行。</param>
+        /// <returns>成功返回对象，失败返回null。</returns>
+        private DocumentInfo getDocumentFromDataRow(DataRow r)
+        {
+            DocumentInfo document = null;
+
+            if (r != null)
+            {
+                document = new DocumentInfo();
+                //菜单id不能为null，否则返回失败。
+                if (!r.IsNull("ID"))
+                {
+                    document.id = Convert.ToInt32(r["ID"]);
+                }
+                else
+                {
+                    return null;
+                }
+
+                if (!r.IsNull("TITLE"))
+                {
+                    document.title = r["TITLE"].ToString();
+                }
+
+                if (!r.IsNull("CATALOGID"))
+                {
+                    document.catalogId = Convert.ToInt32(r["CATALOGID"]);
+                }
+                else
+                {
+                    document.catalogId = -1;
+                }
+
+                if (!r.IsNull("CREATETIME"))
+                {
+                    document.createTime = Convert.ToDateTime(r["CREATETIME"]);
+                }
+
+                if (!r.IsNull("USERID"))
+                {
+                    int userId = Convert.ToInt32(r["USERID"]);
+                    //获取用户信息。
+                    if (userId > 0)
+                    {
+                        OrgOperater orgOper = new OrgOperater();
+                        document.user = orgOper.getUser(userId, this._docDataBase);
+                    }
+                }
+            }
+
+            return document;
+        }
+
+        /// <summary>
+        /// 获取指定目录id的文档列表。
+        /// 作者：董帅 创建时间：2013-6-27 15:29:29
+        /// </summary>
+        /// <param name="pId">目录id，顶级目录为-1。</param>
+        /// <returns>成功返回文档列表，出错返回null。</returns>
+        public List<DocumentInfo> getDocumentsByParentId(int catalogId)
+        {
+            List<DocumentInfo> documents = null;
+
+            try
+            {
+                if (this._docDataBase != null)
+                {
+                    //连接数据库
+                    if (this._docDataBase.connectDataBase())
+                    {
+
+                        //sql语句，获取所有字典
+                        string sql = "";
+                        YParameters par = new YParameters();
+                        par.add("@catalogId", catalogId);
+                        if (catalogId == -1)
+                        {
+                            sql = "SELECT * FROM DOC_DOCUMENT WHERE CATALOGID IS NULL ORDER BY CREATETIME DESC";
+                        }
+                        else
+                        {
+                            sql = "SELECT * FROM DOC_DOCUMENT WHERE CATALOGID = @catalogId ORDER BY CREATETIME DESC";
+                        }
+                        //获取数据
+                        DataTable dt = this._docDataBase.executeSqlReturnDt(sql, par);
+                        if (dt != null)
+                        {
+                            documents = new List<DocumentInfo>();
+                            foreach (DataRow r in dt.Rows)
+                            {
+                                DocumentInfo c = this.getDocumentFromDataRow(r);
+
+
+
+                                if (c != null)
+                                {
+                                    documents.Add(c);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            this._errorMessage = "获取数据失败！错误信息：[" + this._docDataBase.errorText + "]";
+                        }
+                    }
+                    else
+                    {
+                        this._errorMessage = "连接数据库失败！错误信息：[" + this._docDataBase.errorText + "]";
+                    }
+                }
+                else
+                {
+                    this._errorMessage = "未设置数据库实例！";
+                }
+            }
+            catch (Exception ex)
+            {
+                this._errorMessage = ex.Message;
+            }
+            finally
+            {
+                this._docDataBase.disconnectDataBase();
+            }
+
+            return documents;
         }
     }
 }

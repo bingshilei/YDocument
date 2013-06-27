@@ -30,6 +30,7 @@ namespace YAgileASP.background.document
                 }
 
                 this.bindCatalogs();
+                this.bindDocuments();
             }
         }
 
@@ -47,7 +48,7 @@ namespace YAgileASP.background.document
                 DocOper docOper = DocOper.createDocOper(configFile, SystemConfig.databaseConfigNodeName, SystemConfig.configFileKey);
                 if (docOper != null)
                 {
-                    //获取父字典项
+                    //获取父目录
                     if (this.hidParentId.Value == "-1")
                     {
                         this.backButton.Disabled = true;
@@ -61,7 +62,7 @@ namespace YAgileASP.background.document
                         this.hidReturnId.Value = catalog.parentId.ToString();
                     }
 
-                    //获取菜单列表
+                    //获取目录列表
                     List<CatalogInfo> catalogs = docOper.getGatalogsByParentId(Convert.ToInt32(this.hidParentId.Value));
                     if (catalogs != null)
                     {
@@ -70,7 +71,7 @@ namespace YAgileASP.background.document
                     }
                     else
                     {
-                        YMessageBox.show(this, "获取字典数据失败！错误信息[" + docOper.errorMessage + "]");
+                        YMessageBox.show(this, "获取目录数据失败！错误信息[" + docOper.errorMessage + "]");
                     }
                 }
                 else
@@ -82,6 +83,62 @@ namespace YAgileASP.background.document
             {
                 YMessageBox.show(this, "运行错误！错误信息[" + ex.Message + "]");
             }
+        }
+
+        /// <summary>
+        /// 绑定文档。
+        /// </summary>
+        private void bindDocuments()
+        {
+            try
+            {
+                //获取配置文件路径。
+                string configFile = AppDomain.CurrentDomain.BaseDirectory.ToString() + SystemConfig.databaseConfigFileName;
+
+                //获取数据库操作对象
+                DocOper docOper = DocOper.createDocOper(configFile, SystemConfig.databaseConfigNodeName, SystemConfig.configFileKey);
+                if (docOper != null)
+                {
+                    //获取菜单列表
+                    List<DocumentInfo> documents = docOper.getDocumentsByParentId(Convert.ToInt32(this.hidParentId.Value));
+                    if (documents != null)
+                    {
+                        //分页显示。
+                        this.YPagerControl1.PageCount = documents.Count / this.YPagerControl1.DataCount;
+                        if (documents.Count % this.YPagerControl1.DataCount > 0)
+                        {
+                            this.YPagerControl1.PageCount++;
+                        }
+
+                        List<DocumentInfo> showDocs = new List<DocumentInfo>();
+                        while (showDocs.Count < this.YPagerControl1.DataCount
+                            && (this.YPagerControl1.PageNum - 1) * this.YPagerControl1.DataCount + showDocs.Count < documents.Count)
+                        {
+                            showDocs.Add(documents[(this.YPagerControl1.PageNum - 1) * this.YPagerControl1.DataCount + showDocs.Count]);
+                        }
+
+                        this.documentList.DataSource = showDocs;
+                        this.documentList.DataBind();
+                    }
+                    else
+                    {
+                        YMessageBox.show(this, "获取文档数据失败！错误信息[" + docOper.errorMessage + "]");
+                    }
+                }
+                else
+                {
+                    YMessageBox.show(this, "获取数据库操作对象失败！");
+                }
+            }
+            catch (Exception ex)
+            {
+                YMessageBox.show(this, "运行错误！错误信息[" + ex.Message + "]");
+            }
+        }
+
+        protected void YPagerControl1_PageChanged(object sender, EventArgs e)
+        {
+            this.bindDocuments();
         }
     }
 }
