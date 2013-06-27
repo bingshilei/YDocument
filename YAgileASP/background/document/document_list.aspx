@@ -31,7 +31,7 @@
          */
         function addCatalog()
         {
-            window.parent.popupsWindow("#popups", "新增目录", 600, 120, "document/catalog_edit.aspx?parentId=" + +$("#hidParentId").val(), "icon-add", true, true);
+            window.parent.popupsWindow("#popups", "新增目录", 600, 120, "document/catalog_edit.aspx?parentId=" + +$("#hidParentId").val() + "&pageNum=<%=this.YPagerControl1.PageNum %>", "icon-add", true, true);
         }
 
         /*!
@@ -47,7 +47,7 @@
                 return;
             }
 
-            window.parent.popupsWindow("#popups", "编辑目录", 600, 120, "document/catalog_edit.aspx?parentId=" + +$("#hidParentId").val() + "&id=" + $("input:checked[type='checkbox'][name='chkCatalog']").eq(0).val(), "icon-edit", true, true);
+            window.parent.popupsWindow("#popups", "编辑目录", 600, 120, "document/catalog_edit.aspx?parentId=" + +$("#hidParentId").val() + "&id=" + $("input:checked[type='checkbox'][name='chkCatalog']").eq(0).val() + "&pageNum=<%=this.YPagerControl1.PageNum %>", "icon-edit", true, true);
         }
 
         /*!
@@ -57,6 +57,22 @@
         function addDocument()
         {
             window.parent.popupsWindow("#popups", "新增文档", 800, 120, "document/documentInfo_edit.aspx?parentId=" + +$("#hidParentId").val(), "icon-add", true, true);
+        }
+
+        /*!
+        * \brief
+        * 编辑文档信息。
+        */
+        function editDocumentInfo()
+        {
+            //判断选中
+            if ($("input:checked[type='checkbox'][name='chkDocument']").length != 1)
+            {
+                alert("请选中要编辑的文档，一次只能选择一个！");
+                return;
+            }
+
+            window.parent.popupsWindow("#popups", "编辑文档信息", 800, 120, "document/documentInfo_edit.aspx?parentId=" + +$("#hidParentId").val() + "&id=" + $("input:checked[type='checkbox'][name='chkDocument']").eq(0).val() + "&pageNum=<%=this.YPagerControl1.PageNum %>", "icon-edit", true, true);
         }
 
         /*!
@@ -117,7 +133,7 @@
 			<div data-options="region:'north',split:false,border:true" style="height:30px;padding:1px;background-color:#EEF5FD">
                 <div style="width:200px;margin-left:auto;margin-top:0px;margin-right:0px">
                     <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="javascript:addDocument();">新增</a>
-                    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="javascript:editDataDictionary();">修改</a>
+                    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="javascript:editDocumentInfo();">修改</a>
                     <a id="A1" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel',plain:true" onclick="javascript:return deleteDataDictionarys();" runat="server">删除</a>
                 </div>
             </div>

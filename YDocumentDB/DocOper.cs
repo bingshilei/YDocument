@@ -272,13 +272,6 @@ namespace YLR.YDocumentDB
                         if (dt != null && dt.Rows.Count > 0)
                         {
                             catalog = this.getGatalogFromDataRow(dt.Rows[0]);
-
-                            //获取用户信息。
-                            if (catalog != null && catalog.user.id > 0)
-                            {
-                                OrgOperater orgOper = new OrgOperater();
-                                catalog.user = orgOper.getUser(catalog.user.id, this._docDataBase);
-                            }
                         }
                         else
                         {
@@ -311,7 +304,7 @@ namespace YLR.YDocumentDB
         /// 获取指定父id的目录列表。
         /// 作者：董帅 创建时间：2013-6-26 13:51:59
         /// </summary>
-        /// <param name="catalogId">父id，顶级目录为-1。</param>
+        /// <param name="pId">父id，顶级目录为-1。</param>
         /// <returns>成功返回目录列表，出错返回null。</returns>
         public List<CatalogInfo> getGatalogsByParentId(int pId)
         {
@@ -613,10 +606,67 @@ namespace YLR.YDocumentDB
         }
 
         /// <summary>
+        /// 获取指定的文档信息。
+        /// 作者：董帅 创建时间：2013-6-27 17:10:32
+        /// </summary>
+        /// <param name="id">文档id。</param>
+        /// <returns>成功返回文档信息，出错返回null。</returns>
+        public DocumentInfo getDocument(int id)
+        {
+            DocumentInfo document = null;
+
+            try
+            {
+                if (this._docDataBase != null)
+                {
+                    //连接数据库
+                    if (this._docDataBase.connectDataBase())
+                    {
+
+                        //sql语句
+                        string sql = "";
+                        YParameters par = new YParameters();
+                        par.add("@id", id);
+                        sql = "SELECT * FROM DOC_DOCUMENT WHERE ID = @id";
+
+                        //获取数据
+                        DataTable dt = this._docDataBase.executeSqlReturnDt(sql, par);
+                        if (dt != null && dt.Rows.Count > 0)
+                        {
+                            document = this.getDocumentFromDataRow(dt.Rows[0]);
+                        }
+                        else
+                        {
+                            this._errorMessage = "获取数据失败！错误信息：[" + this._docDataBase.errorText + "]";
+                        }
+                    }
+                    else
+                    {
+                        this._errorMessage = "连接数据库失败！错误信息：[" + this._docDataBase.errorText + "]";
+                    }
+                }
+                else
+                {
+                    this._errorMessage = "未设置数据库实例！";
+                }
+            }
+            catch (Exception ex)
+            {
+                this._errorMessage = ex.Message;
+            }
+            finally
+            {
+                this._docDataBase.disconnectDataBase();
+            }
+
+            return document;
+        }
+
+        /// <summary>
         /// 获取指定目录id的文档列表。
         /// 作者：董帅 创建时间：2013-6-27 15:29:29
         /// </summary>
-        /// <param name="pId">目录id，顶级目录为-1。</param>
+        /// <param name="catalogId">目录id，顶级目录为-1。</param>
         /// <returns>成功返回文档列表，出错返回null。</returns>
         public List<DocumentInfo> getDocumentsByParentId(int catalogId)
         {
@@ -684,6 +734,67 @@ namespace YLR.YDocumentDB
             }
 
             return documents;
+        }
+
+        /// <summary>
+        /// 修改指定的文档信息，通过文档id匹配。
+        /// </summary>
+        /// <param name="document">要修改的文档。</param>
+        /// <returns>成功返回true，否则返回false。</returns>
+        public bool changeDocument(DocumentInfo document)
+        {
+            bool bRet = false; //返回值
+
+            try
+            {
+                if (this._docDataBase != null)
+                {
+                    //连接数据库
+                    if (this._docDataBase.connectDataBase())
+                    {
+                        //sql语句
+                        string sql = "";
+                        YParameters par = new YParameters();
+                        par.add("@documentId", document.id);
+                        par.add("@documentTitle", document.title);
+
+                        sql = "UPDATE DOC_DOCUMENT SET TITLE = @documentTitle WHERE ID = @documentId";
+
+                        int retCount = this._docDataBase.executeSqlWithOutDs(sql, par);
+                        if (retCount == 1)
+                        {
+                            bRet = true;
+                        }
+                        else
+                        {
+                            this._errorMessage = "更新数据失败！";
+                            if (retCount != 1)
+                            {
+                                this._errorMessage += "错误信息[" + this._docDataBase.errorText + "]";
+                            }
+                        }
+                    }
+                    else
+                    {
+                        this._errorMessage = "连接数据库出错！错误信息[" + this._docDataBase.errorText + "]";
+                    }
+
+                }
+                else
+                {
+                    this._errorMessage = "未设置数据库实例！";
+                }
+            }
+            catch (Exception ex)
+            {
+                this._errorMessage = ex.Message;
+            }
+            finally
+            {
+                this._docDataBase.disconnectDataBase();
+            }
+
+            return bRet;
         }
     }
 }

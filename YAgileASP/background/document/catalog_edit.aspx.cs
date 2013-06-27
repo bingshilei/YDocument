@@ -28,6 +28,17 @@ namespace YAgileASP.background.document
                     this.hidParentId.Value = "-1";
                 }
 
+                //获取页号
+                string pageNum = Request.QueryString["pageNum"];
+                if (!string.IsNullOrEmpty(pageNum))
+                {
+                    this.hidPageNmu.Value = pageNum;
+                }
+                else
+                {
+                    this.hidPageNmu.Value = "1";
+                }
+
                 //获取id
                 string strId = Request.QueryString["id"];
                 if (!string.IsNullOrEmpty(strId))
@@ -104,7 +115,7 @@ namespace YAgileASP.background.document
                         //新增
                         if (docOper.createNewCatalog(catalog) > 0)
                         {
-                            YMessageBox.showAndResponseScript(this, "保存成功！", "", "window.parent.menuButtonOnClick('文档管理','icon-docManage','document/document_list.aspx?parentId=" + this.hidParentId.Value + "');window.parent.closePopupsWindow('#popups');");
+                            YMessageBox.showAndResponseScript(this, "保存成功！", "", "window.parent.menuButtonOnClick('文档管理','icon-docManage','document/document_list.aspx?parentId=" + this.hidParentId.Value + "&pageNum=" + this.hidPageNmu.Value + "');window.parent.closePopupsWindow('#popups');");
                         }
                         else
                         {
@@ -118,7 +129,7 @@ namespace YAgileASP.background.document
                         catalog.id = Convert.ToInt32(this.hidCatalogId.Value);
                         if (docOper.changeCatalog(catalog))
                         {
-                            YMessageBox.showAndResponseScript(this, "保存成功！", "", "window.parent.menuButtonOnClick('文档管理','icon-docManage','document/document_list.aspx?parentId=" + this.hidParentId.Value + "');window.parent.closePopupsWindow('#popups');");
+                            YMessageBox.showAndResponseScript(this, "保存成功！", "", "window.parent.menuButtonOnClick('文档管理','icon-docManage','document/document_list.aspx?parentId=" + this.hidParentId.Value + "&pageNum=" + this.hidPageNmu.Value + "');window.parent.closePopupsWindow('#popups');");
                         }
                         else
                         {

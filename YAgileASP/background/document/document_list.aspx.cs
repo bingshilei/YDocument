@@ -29,6 +29,13 @@ namespace YAgileASP.background.document
                     this.hidParentId.Value = "-1";
                 }
 
+                //获取页号
+                string pageNum = Request.QueryString["pageNum"];
+                if (!string.IsNullOrEmpty(pageNum))
+                {
+                    this.YPagerControl1.PageNum = Convert.ToInt32(pageNum);
+                }
+
                 this.bindCatalogs();
                 this.bindDocuments();
             }

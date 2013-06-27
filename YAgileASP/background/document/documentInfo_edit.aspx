@@ -56,8 +56,9 @@
 </head>
 <body style="width:100%;margin:0px;background-color:#EEF5FD;">
     <form id="form1" runat="server" class="easyui-layout" flt="true" style="width:100%;height:100%;margin:0px;background-color:#EEF5FD;">
-    <input type="hidden" name="hidCatalogId" id="hidCatalogId" runat="server" value="" />
+    <input type="hidden" name="hidDocumentId" id="hidDocumentId" runat="server" value="" />
     <input type="hidden" name="hidParentId" id="hidParentId" runat="server" value="" />
+    <input type="hidden" name="hidPageNmu" id="hidPageNmu" runat="server" value="" />
     <div id="center" region="center" style="padding:1px;background-color:#EEF5FD">
         <table class="editTable" style="width:100%;">
             <tr>
