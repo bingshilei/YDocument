@@ -40,13 +40,13 @@ namespace YAgileASP.background.document {
         protected global::System.Web.UI.HtmlControls.HtmlInputHidden hidParentId;
         
         /// <summary>
-        /// txtDocumentName 控件。
+        /// txtDocumentTitle 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText txtDocumentName;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl txtDocumentTitle;
         
         /// <summary>
         /// txtUserName 控件。

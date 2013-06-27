@@ -21,6 +21,8 @@
     <script type="text/javascript" src="../../js/jquery-easyui/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="../../js/jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
     <script type="text/javascript" src="../../js/YWindows.js"></script>
+    <script src="../../ueditor/ueditor.all.js" type="text/javascript"></script>
+    <script src="../../ueditor/ueditor.config.js" type="text/javascript"></script>
 
     <script type="text/javascript">
         /*!
@@ -30,10 +32,10 @@
         */
         function checkForms()
         {
-            if (!$("#txtDocumentName").validatebox("isValid"))
-            {
-                return false;
-            }
+//            if (!$("#txtDocumentName").validatebox("isValid"))
+//            {
+//                return false;
+//            }
 
             return true;
         }
@@ -62,7 +64,7 @@
         <table class="editTable" style="width:100%;">
             <tr>
                 <th style="width:120px">标题：</th>
-                <td colspan="3"><input type="text" id="txtDocumentName" name="txtDocumentName" class="easyui-validatebox" required="true" maxlength="200" runat="server" style="width:600px" /></td>
+                <td colspan="3"><span id="txtDocumentTitle" name="txtDocumentTitle" runat="server"></span></td>
             </tr>
             <tr>
                 <th style="width:120px">作者：</th>
@@ -71,9 +73,15 @@
                 <td><span id="txtCreateTime" name="txtCreateTime" runat="server"></span></td>
             </tr>
             <tr>
-                <td colspan="4"></td>
+                <td id="documentEditor" colspan="4" style="width:980px;height:800px">
+                    
+                </td>
             </tr>
         </table>
+        <script type="text/javascript">
+            var editor = new baidu.editor.ui.Editor();
+            editor.render("documentEditor");  
+        </script>
     </div>
     <div region="south" border="true" style="height:30px;background:#D9E5FD;padding:1px;">
 	    <div style="width:170px;margin-left:auto;margin-right:5px">
