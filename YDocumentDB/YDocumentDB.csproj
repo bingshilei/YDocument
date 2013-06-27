@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="CatalogInfo.cs" />
     <Compile Include="DocOper.cs" />
+    <Compile Include="DocumentInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -70,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="background\document\catalog_edit.aspx" />
+    <Content Include="background\document\documentInfo_edit.aspx" />
     <Content Include="background\document\document_edit.aspx" />
     <Content Include="background\document\document_list.aspx" />
     <Content Include="background\images\login\login.png" />
@@ -601,6 +602,13 @@
     </Compile>
     <Compile Include="background\document\catalog_edit.aspx.designer.cs">
       <DependentUpon>catalog_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="background\document\documentInfo_edit.aspx.cs">
+      <DependentUpon>documentInfo_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="background\document\documentInfo_edit.aspx.designer.cs">
+      <DependentUpon>documentInfo_edit.aspx</DependentUpon>
     </Compile>
     <Compile Include="background\document\document_edit.aspx.cs">
       <DependentUpon>document_edit.aspx</DependentUpon>

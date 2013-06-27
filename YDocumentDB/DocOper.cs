@@ -331,11 +331,11 @@ namespace YLR.YDocumentDB
                         par.add("@parentId", pId);
                         if (pId == -1)
                         {
-                            sql = "SELECT * FROM DOC_CATALOG WHERE PARENTID IS NULL";
+                            sql = "SELECT * FROM DOC_CATALOG WHERE PARENTID IS NULL ORDER BY CREATETIME ASC";
                         }
                         else
                         {
-                            sql = "SELECT * FROM DOC_CATALOG WHERE PARENTID = @parentId";
+                            sql = "SELECT * FROM DOC_CATALOG WHERE PARENTID = @parentId ORDER BY CREATETIME ASC";
                         }
                         //获取数据
                         DataTable dt = this._docDataBase.executeSqlReturnDt(sql, par);
@@ -440,6 +440,119 @@ namespace YLR.YDocumentDB
             }
 
             return bRet;
+        }
+
+        /// <summary>
+        /// 创建新文档。
+        /// </summary>
+        /// <param name="document">文档信息，文档名称长度在1~200，顶层文档目录id为-1。</param>
+        /// <returns>成功返回文档id，失败返回-1。</returns>
+        public int createNewDocument(DocumentInfo document)
+        {
+            int documentId = -1; //创建的文档id。
+
+            try
+            {
+                if (document == null)
+                {
+                    this._errorMessage = "必须输入文档标题！";
+                }
+                else if (string.IsNullOrEmpty(document.title) || document.title.Length > 200)
+                {
+                    this._errorMessage = "文档标题不合法！";
+                }
+                else
+                {
+                    //存入数据库
+                    if (this._docDataBase.connectDataBase())
+                    {
+                        //新增数据
+                        string sql = "";
+                        YParameters par = new YParameters();
+                        par.add("@documentTitle", document.title);
+                        par.add("@userId", document.user.id);
+                        par.add("@catalogId", document.catalogId);
+                        if (document.catalogId == -1)
+                        {
+                            switch (this._docDataBase.databaseType)
+                            {
+                                case DataBaseType.MSSQL:
+                                case DataBaseType.SQL2000:
+                                case DataBaseType.SQL2005:
+                                case DataBaseType.SQL2008:
+                                    {
+                                        sql = "INSERT INTO DOC_DOCUMENT (TITLE,USERID) VALUES (@documentTitle,@userId) SELECT SCOPE_IDENTITY() AS id";
+                                        break;
+                                    }
+                                case DataBaseType.SQLite:
+                                    {
+                                        sql = "INSERT INTO DOC_DOCUMENT (TITLE,USERID) VALUES (@documentTitle,@userId);SELECT LAST_INSERT_ROWID() AS id;";
+                                        break;
+                                    }
+                                default:
+                                    {
+                                        sql = "INSERT INTO DOC_DOCUMENT (TITLE,USERID) VALUES (@documentTitle,@userId) SELECT SCOPE_IDENTITY() AS id";
+                                        break;
+                                    }
+                            }
+                        }
+                        else
+                        {
+                            switch (this._docDataBase.databaseType)
+                            {
+                                case DataBaseType.MSSQL:
+                                case DataBaseType.SQL2000:
+                                case DataBaseType.SQL2005:
+                                case DataBaseType.SQL2008:
+                                    {
+                                        sql = "INSERT INTO DOC_DOCUMENT (TITLE,USERID,CATALOGID) VALUES (@documentTitle,@userId,@catalogId) SELECT SCOPE_IDENTITY() AS id";
+                                        break;
+                                    }
+                                case DataBaseType.SQLite:
+                                    {
+                                        sql = "INSERT INTO DOC_DOCUMENT (TITLE,USERID,CATALOGID,VALUE) VALUES (@documentTitle,@userId,@catalogId);SELECT LAST_INSERT_ROWID() AS id;";
+                                        break;
+                                    }
+                                default:
+                                    {
+                                        sql = "INSERT INTO DOC_DOCUMENT (TITLE,USERID,CATALOGID) VALUES (@documentTitle,@userId,@catalogId) SELECT SCOPE_IDENTITY() AS id";
+                                        break;
+                                    }
+                            }
+                        }
+
+                        DataTable retDt = this._docDataBase.executeSqlReturnDt(sql, par);
+                        if (retDt != null && retDt.Rows.Count > 0)
+                        {
+                            //获文档id
+                            documentId = Convert.ToInt32(retDt.Rows[0]["id"]);
+                        }
+                        else
+                        {
+                            this._errorMessage = "创建文档失败！";
+                            if (retDt == null)
+                            {
+                                this._errorMessage += "错误信息[" + this._docDataBase.errorText + "]";
+                            }
+                        }
+                    }
+                    else
+                    {
+                        this._errorMessage = "连接数据库出错！错误信息[" + this._docDataBase.errorText + "]";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                //断开数据库连接。
+                this._docDataBase.disconnectDataBase();
+            }
+
+            return documentId;
         }
     }
 }

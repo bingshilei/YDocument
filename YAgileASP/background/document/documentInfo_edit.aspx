@@ -1,10 +1,10 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="document_edit.aspx.cs" Inherits="YAgileASP.background.document.document_edit" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="documentInfo_edit.aspx.cs" Inherits="YAgileASP.background.document.documentInfo_edit" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>编辑文档</title>
+    <title>编辑文档信息</title>
     <meta http-equiv="pragma" content="no-cache" />
     <meta http-equiv="cache-control" ontent="no-cache" />  
     <meta http-equiv="expires" content="0" />  
@@ -21,8 +21,6 @@
     <script type="text/javascript" src="../../js/jquery-easyui/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="../../js/jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
     <script type="text/javascript" src="../../js/YWindows.js"></script>
-    <script src="../../ueditor/ueditor.all.js" type="text/javascript"></script>
-    <script src="../../ueditor/ueditor.config.js" type="text/javascript"></script>
 
     <script type="text/javascript">
         /*!
@@ -32,10 +30,10 @@
         */
         function checkForms()
         {
-//            if (!$("#txtDocumentName").validatebox("isValid"))
-//            {
-//                return false;
-//            }
+            if (!$("#txtDocumentTitle").validatebox("isValid"))
+            {
+                return false;
+            }
 
             return true;
         }
@@ -64,24 +62,11 @@
         <table class="editTable" style="width:100%;">
             <tr>
                 <th style="width:120px">标题：</th>
-                <td colspan="3"><span id="txtDocumentTitle" name="txtDocumentTitle" runat="server"></span></td>
-            </tr>
-            <tr>
-                <th style="width:120px">作者：</th>
-                <td><span id="txtUserName" name="txtUserName" runat="server"></span></td>
-                <th style="width:120px">创建时间：</th>
-                <td><span id="txtCreateTime" name="txtCreateTime" runat="server"></span></td>
-            </tr>
-            <tr>
-                <td id="documentEditor" colspan="4" style="width:980px;height:800px">
-                    
+                <td colspan="3">
+                    <input type="text" id="txtDocumentTitle" name="txtDocumentTitle" runat="server" class="easyui-validatebox" required="true" maxlength="100" style="width:400px" />
                 </td>
             </tr>
         </table>
-        <script type="text/javascript">
-            var editor = new baidu.editor.ui.Editor();
-            editor.render("documentEditor");  
-        </script>
     </div>
     <div region="south" border="true" style="height:30px;background:#D9E5FD;padding:1px;">
 	    <div style="width:170px;margin-left:auto;margin-right:5px">

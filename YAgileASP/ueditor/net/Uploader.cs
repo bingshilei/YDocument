@@ -60,7 +60,7 @@ public  class Uploader
         }
         catch (Exception e)
         {
-            state = "未知错误";
+            state = "未知错误" + e.Message;
             URL = "";
         }
         return getUploadInfo();
@@ -93,7 +93,7 @@ public  class Uploader
         }
         catch (Exception e)
         {
-            state = "未知错误";
+            state = "未知错误" + e.Message;
             URL = "";
         }
         finally

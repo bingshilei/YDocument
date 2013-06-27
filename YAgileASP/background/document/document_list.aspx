@@ -56,7 +56,7 @@
         */
         function addDocument()
         {
-            window.parent.popupsWindow("#popups", "新增文档", 1024, 600, "document/document_edit.aspx?parentId=" + +$("#hidParentId").val(), "icon-add", true, true);
+            window.parent.popupsWindow("#popups", "新增文档", 800, 120, "document/documentInfo_edit.aspx?parentId=" + +$("#hidParentId").val(), "icon-add", true, true);
         }
 
         /*!
