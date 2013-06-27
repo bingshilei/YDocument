@@ -52,6 +52,25 @@
 
         /*!
         * \brief
+        * 删除目录。
+        * 作者：董帅 创建时间：2013-6-27 22:29:26
+        */
+        function deleteCatalogs()
+        {
+            //判断选中
+            if ($("input:checked[type='checkbox'][name='chkCatalog']").length > 0)
+            {
+                return confirm("确认要删除选中的目录？删除时将连同子目录和文档一并删除！");
+            }
+            else
+            {
+                alert("请选中要删除的目录！");
+                return false;
+            }
+        }
+
+        /*!
+        * \brief
         * 新增文档。
         */
         function addDocument()
@@ -144,7 +163,7 @@
         <div id="folderButton">
 		    <a href="javascript:void(0)" class="icon-add" onclick="javascript:addCatalog()"></a>
 		    <a href="javascript:void(0)" class="icon-edit" onclick="javascript:editCatalog()"></a>
-		    <a href="javascript:void(0)" class="icon-cancel" onclick="javascript:alert('cut')"></a>
+		    <a href="javascript:void(0)" class="icon-cancel" onclick="javascript:return deleteCatalogs();" runat="server" onserverclick="butDeleteCatalogs_Click"></a>
 	    </div>
     </div>
     <div id="center" region="center" title="<%=_catalogName%>" iconCls="icon-folder" style="padding:1px;background-color:#EEF5FD">

@@ -317,40 +317,7 @@ namespace YLR.YDocumentDB
                     //连接数据库
                     if (this._docDataBase.connectDataBase())
                     {
-
-                        //sql语句，获取所有字典
-                        string sql = "";
-                        YParameters par = new YParameters();
-                        par.add("@parentId", pId);
-                        if (pId == -1)
-                        {
-                            sql = "SELECT * FROM DOC_CATALOG WHERE PARENTID IS NULL ORDER BY CREATETIME ASC";
-                        }
-                        else
-                        {
-                            sql = "SELECT * FROM DOC_CATALOG WHERE PARENTID = @parentId ORDER BY CREATETIME ASC";
-                        }
-                        //获取数据
-                        DataTable dt = this._docDataBase.executeSqlReturnDt(sql, par);
-                        if (dt != null)
-                        {
-                            catalogs = new List<CatalogInfo>();
-                            foreach (DataRow r in dt.Rows)
-                            {
-                                CatalogInfo c = this.getGatalogFromDataRow(r);
-
-                                
-
-                                if (c != null)
-                                {
-                                    catalogs.Add(c);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            this._errorMessage = "获取数据失败！错误信息：[" + this._docDataBase.errorText + "]";
-                        }
+                        catalogs = this.getGatalogsByParentId(pId, this._docDataBase);
                     }
                     else
                     {
@@ -369,6 +336,66 @@ namespace YLR.YDocumentDB
             finally
             {
                 this._docDataBase.disconnectDataBase();
+            }
+
+            return catalogs;
+        }
+
+        /// <summary>
+        /// 获取指定父id的目录列表。
+        /// 作者：董帅 创建时间：2013-6-26 13:51:59
+        /// </summary>
+        /// <param name="pId">父id，顶级目录为-1。</param>
+        /// <param name="db">数据库连接</param>
+        /// <returns>成功返回目录列表，出错返回null。</returns>
+        public List<CatalogInfo> getGatalogsByParentId(int pId,YDataBase db)
+        {
+            List<CatalogInfo> catalogs = null;
+
+            try
+            {
+                if (db != null)
+                {
+                    //sql语句，获取所有字典
+                    string sql = "";
+                    YParameters par = new YParameters();
+                    par.add("@parentId", pId);
+                    if (pId == -1)
+                    {
+                        sql = "SELECT * FROM DOC_CATALOG WHERE PARENTID IS NULL ORDER BY CREATETIME ASC";
+                    }
+                    else
+                    {
+                        sql = "SELECT * FROM DOC_CATALOG WHERE PARENTID = @parentId ORDER BY CREATETIME ASC";
+                    }
+                    //获取数据
+                    DataTable dt = db.executeSqlReturnDt(sql, par);
+                    if (dt != null)
+                    {
+                        catalogs = new List<CatalogInfo>();
+                        foreach (DataRow r in dt.Rows)
+                        {
+                            CatalogInfo c = this.getGatalogFromDataRow(r);
+
+                            if (c != null)
+                            {
+                                catalogs.Add(c);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        this._errorMessage = "获取数据失败！错误信息：[" + db.errorText + "]";
+                    }
+                }
+                else
+                {
+                    this._errorMessage = "未设置数据库实例！";
+                }
+            }
+            catch (Exception ex)
+            {
+                this._errorMessage = ex.Message;
             }
 
             return catalogs;
@@ -430,6 +457,126 @@ namespace YLR.YDocumentDB
             finally
             {
                 this._docDataBase.disconnectDataBase();
+            }
+
+            return bRet;
+        }
+
+        /// <summary>
+        /// 删除目录，删除时，连同子目录和文档一并删除。
+        /// 作者：董帅 创建时间：2012-8-28 22:20:05
+        /// </summary>
+        /// <param name="catalogIds">字典项id</param>
+        /// <returns>成功返回true，否则返回false。</returns>
+        public bool deleteCatalogs(int[] catalogIds)
+        {
+            bool bRet = true;
+            try
+            {
+                //连接数据库
+                if (this._docDataBase.connectDataBase())
+                {
+                    this._docDataBase.beginTransaction(); //开启事务
+
+                    //删除字典项
+                    foreach (int i in catalogIds)
+                    {
+                        if (this.deleteCatalogsByParentId(i,this._docDataBase))
+                        {
+                            //删除当前机构
+                            string sql = "DELETE FROM DOC_CATALOG WHERE ID = @id";
+                            YParameters par = new YParameters();
+                            par.add("@id", i);
+                            if (this._docDataBase.executeSqlWithOutDs(sql, par) < 0)
+                            {
+                                bRet = false;
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            bRet = false;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    this._errorMessage = "连接数据库出错！错误信息[" + this._docDataBase.errorText + "]";
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                if (bRet)
+                {
+                    //提交
+                    this._docDataBase.commitTransaction();
+                }
+                else
+                {
+                    //回滚
+                    this._docDataBase.rollbackTransaction();
+                }
+                this._docDataBase.disconnectDataBase();
+            }
+
+            return bRet;
+        }
+
+        /// <summary>
+        /// 删除指定父id的目录。
+        /// 作者：董帅 创建时间：2013-6-27 23:32:32
+        /// </summary>
+        /// <param name="catalogId">目录id</param>
+        /// <param name="db">数据库连接</param>
+        /// <returns>成功返回true，否则返回false。</returns>
+        public bool deleteCatalogsByParentId(int catalogId, YDataBase db)
+        {
+            bool bRet = true;
+            try
+            {
+                //删除文档
+                if (this.deleteDocumentsByCatalogId(catalogId, db))
+                {
+                    //删除子目录
+                    List<CatalogInfo> catalogs = this.getGatalogsByParentId(catalogId, db);
+                    int i = 0;
+                    for (i = 0;i < catalogs.Count;i++)
+                    {
+                        if (!this.deleteCatalogsByParentId(catalogs[i].id, db))
+                        {
+                            break;
+                        }
+                    }
+
+                    if (i == catalogs.Count)
+                    {
+                        YParameters par = new YParameters();
+                        par.add("@catalogId", catalogId);
+                        string sql = "DELETE FROM DOC_CATALOG WHERE PARENTID = @catalogId";
+
+                        if (db.executeSqlWithOutDs(sql, par) < 0)
+                        {
+                            bRet = false;
+                        }
+                    }
+                    else
+                    {
+                        bRet = false;
+                    }
+                }
+                else
+                {
+                    bRet = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
 
             return bRet;
@@ -622,7 +769,6 @@ namespace YLR.YDocumentDB
                     //连接数据库
                     if (this._docDataBase.connectDataBase())
                     {
-
                         //sql语句
                         string sql = "";
                         YParameters par = new YParameters();
@@ -811,7 +957,7 @@ namespace YLR.YDocumentDB
                 //连接数据库
                 if (this._docDataBase.connectDataBase())
                 {
-                    //删除字典项
+                    //删除文档
                     if (docIds.Length > 0)
                     {
                         YParameters par = new YParameters();
@@ -823,9 +969,7 @@ namespace YLR.YDocumentDB
                             par.add("@id" + i.ToString(),docIds[i]);
                         }
 
-                        //删除当前机构
                         string sql = "DELETE FROM DOC_DOCUMENT WHERE ID IN (" + ids + ")";
-                        
                         
                         if (this._docDataBase.executeSqlWithOutDs(sql, par) < 0)
                         {
@@ -845,6 +989,36 @@ namespace YLR.YDocumentDB
             finally
             {
                 this._docDataBase.disconnectDataBase();
+            }
+
+            return bRet;
+        }
+
+        /// <summary>
+        /// 删除指定目录的文档。
+        /// 作者：董帅 创建时间：2013-6-27 23:32:32
+        /// </summary>
+        /// <param name="catalogId">目录id</param>
+        /// <param name="db">数据库连接</param>
+        /// <returns>成功返回true，否则返回false。</returns>
+        public bool deleteDocumentsByCatalogId(int catalogId,YDataBase db)
+        {
+            bool bRet = true;
+            try
+            {
+                YParameters par = new YParameters();
+                par.add("@catalogId",catalogId);
+
+                string sql = "DELETE FROM DOC_DOCUMENT WHERE CATALOGID = @catalogId";
+
+                if (db.executeSqlWithOutDs(sql, par) < 0)
+                {
+                    bRet = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
 
             return bRet;
