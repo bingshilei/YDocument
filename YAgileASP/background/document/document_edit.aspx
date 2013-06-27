@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="document_edit.aspx.cs" Inherits="YAgileASP.background.document.document_edit" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" validateRequest="false" CodeBehind="document_edit.aspx.cs" Inherits="YAgileASP.background.document.document_edit" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -27,21 +27,6 @@
     <script type="text/javascript">
         /*!
         * \brief
-        * 验证表单。
-        * 作者：董帅 创建时间：2012-8-28 17:26:01
-        */
-        function checkForms()
-        {
-//            if (!$("#txtDocumentName").validatebox("isValid"))
-//            {
-//                return false;
-//            }
-
-            return true;
-        }
-
-        /*!
-        * \brief
         * 动态调整layout。
         */
         $(function ()
@@ -58,34 +43,49 @@
 </head>
 <body style="width:100%;margin:0px;background-color:#EEF5FD;">
     <form id="form1" runat="server" class="easyui-layout" flt="true" style="width:100%;height:100%;margin:0px;background-color:#EEF5FD;">
-    <input type="hidden" name="hidCatalogId" id="hidCatalogId" runat="server" value="" />
-    <input type="hidden" name="hidParentId" id="hidParentId" runat="server" value="" />
     <div id="center" region="center" style="padding:1px;background-color:#EEF5FD">
-        <table class="editTable" style="width:100%;">
-            <tr>
-                <th style="width:120px">标题：</th>
-                <td colspan="3"><span id="txtDocumentTitle" name="txtDocumentTitle" runat="server"></span></td>
-            </tr>
-            <tr>
-                <th style="width:120px">作者：</th>
-                <td><span id="txtUserName" name="txtUserName" runat="server"></span></td>
-                <th style="width:120px">创建时间：</th>
-                <td><span id="txtCreateTime" name="txtCreateTime" runat="server"></span></td>
-            </tr>
-            <tr>
-                <td id="documentEditor" colspan="4" style="width:980px;height:800px">
-                    
-                </td>
-            </tr>
-        </table>
-        <script type="text/javascript">
-            var editor = new baidu.editor.ui.Editor();
-            editor.render("documentEditor");  
-        </script>
+    
+    <input type="hidden" name="hidDocumentId" id="hidDocumentId" runat="server" value="" />
+    <table class="editTable" style="width:100%;">
+        <tr>
+            <th style="width:120px">标题：</th>
+            <td colspan="3" style="width:600px"><span id="txtDocumentTitle" name="txtDocumentTitle" runat="server" style="width:500px"></span></td>
+        </tr>
+        <tr>
+            <th style="width:120px">作者：</th>
+            <td style="width:300px"><span id="txtUserName" name="txtUserName" runat="server" style="width:300px"></span></td>
+            <th style="width:120px">创建时间：</th>
+            <td style="width:300px"><span id="txtCreateTime" name="txtCreateTime" runat="server" style="width:300px"></span></td>
+        </tr>
+        <tr>
+            <td id="documentEditor" colspan="4" runat="server" style="width:980px;height:800px"></td>
+        </tr>
+    </table>
+    <script type="text/javascript">
+        var editor = new baidu.editor.ui.Editor();
+        editor.addListener('contentChange', function ()
+        {
+            $("#hidHtmlText").val(editor.getContent());
+            $("#hidPlanText").val(editor.getPlainTxt());
+        });
+        editor.render("documentEditor");  
+    </script>
+    
+    <asp:ScriptManager ID="ScriptManager1" runat="server">
+    </asp:ScriptManager>
+    <asp:Timer ID="Timer1" runat="server" Interval="10000" ontick="Timer1_Tick">
+    </asp:Timer>
+    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+    <ContentTemplate>
+        <input type="hidden" id="hidHtmlText" name="hidHtmlText" runat="server" />
+        <input type="hidden" id="hidPlanText" name="hidPlanText" runat="server" />
+    </ContentTemplate>
+    </asp:UpdatePanel>
     </div>
+    
     <div region="south" border="true" style="height:30px;background:#D9E5FD;padding:1px;">
 	    <div style="width:170px;margin-left:auto;margin-right:5px">
-            <a id="A1" href="#" class="easyui-linkbutton" iconCls="icon-save" runat="server" onclick="javascript:return checkForms();" onserverclick="butSave_Click" >保存</a>
+            <a id="A1" href="#" class="easyui-linkbutton" iconCls="icon-save" runat="server" onserverclick="butSave_Click" >保存</a>
             <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:window.parent.closePopupsWindow('#popups')">取消</a>
         </div>
 	</div>

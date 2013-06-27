@@ -198,7 +198,7 @@
                             <%#Eval("CREATETIME","{0:yyyy-MM-dd HH:mm:ss}")%>
                         </td>
                         <td style="text-align:center">
-                            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-editorDocument'" onclick="javascript:addDocument();">编辑</a>
+                            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-editorDocument'" onclick="javascript:window.parent.popupsWindow('#popups', '编辑文档', 1024, 600, 'document/document_edit.aspx?id=<%#Eval("ID") %>', 'icon-edit', true, true);">编辑</a>
                         </td>
                     </tr>
                 </ItemTemplate>
@@ -215,7 +215,7 @@
                             <%#Eval("CREATETIME","{0:yyyy-MM-dd HH:mm:ss}")%>
                         </td>
                         <td style="text-align:center">
-                            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-editorDocument'" onclick="javascript:addDocument();">编辑</a>
+                            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-editorDocument'" onclick="javascript:window.parent.popupsWindow('#popups', '编辑文档', 1024, 600, 'document/document_edit.aspx?id=<%#Eval("ID") %>', 'icon-edit', true, true);">编辑</a>
                         </td>
                     </tr>
                 </AlternatingItemTemplate>
