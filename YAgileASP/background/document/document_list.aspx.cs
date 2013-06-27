@@ -147,5 +147,64 @@ namespace YAgileASP.background.document
         {
             this.bindDocuments();
         }
+
+        /// <summary>
+        /// 删除文档
+        /// 作者：董帅 创建时间：2013-6-27 22:28:26
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void butDeleteDocuments_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string s = Request["chkDocument"];
+                string[] docIds = new string[0];
+                if (!string.IsNullOrEmpty(s))
+                {
+                    docIds = s.Split(','); //要删除的文档id
+                }
+
+                if (docIds.Length > 0)
+                {
+                    //获取配置文件路径。
+                    string configFile = AppDomain.CurrentDomain.BaseDirectory.ToString() + SystemConfig.databaseConfigFileName;
+
+                    //创建数据库操作对象。
+                    DocOper docOper = DocOper.createDocOper(configFile, SystemConfig.databaseConfigNodeName, SystemConfig.configFileKey);
+                    if (docOper != null)
+                    {
+                        //删除文档
+                        int[] dicIntIds = new int[docIds.Length];
+                        for (int i = 0; i < docIds.Length; i++)
+                        {
+                            dicIntIds[i] = Convert.ToInt32(docIds[i]);
+                        }
+
+                        if (docOper.deleteDocuments(dicIntIds))
+                        {
+                            this.Response.Redirect("document_list.aspx?parentId=" + this.hidParentId.Value + "&pageNum=" + this.YPagerControl1.PageNum.ToString());
+                            //YMessageBox.showAndResponseScript(this, "删除数据成功！", "", "window.location.href='dataDictionary_list.aspx?parentId=" + this.hidParentId.Value + "'");
+                        }
+                        else
+                        {
+                            YMessageBox.show(this, "删除数据失败！错误信息[" + docOper.errorMessage + "]");
+                        }
+                    }
+                    else
+                    {
+                        YMessageBox.show(this, "获取数据库实例失败！");
+                    }
+                }
+                else
+                {
+                    YMessageBox.show(this, "没有选择要删除的字典！");
+                }
+            }
+            catch (Exception ex)
+            {
+                YMessageBox.show(this, "系统运行异常！异常信息[" + ex.Message + "]");
+            }
+        }
     }
 }

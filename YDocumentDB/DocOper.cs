@@ -796,5 +796,58 @@ namespace YLR.YDocumentDB
 
             return bRet;
         }
+
+        /// <summary>
+        /// 删除指定的文档。
+        /// 作者：董帅 创建时间：2013-6-27 22:31:54
+        /// </summary>
+        /// <param name="docIds">文档id</param>
+        /// <returns>成功返回true，否则返回false。</returns>
+        public bool deleteDocuments(int[] docIds)
+        {
+            bool bRet = true;
+            try
+            {
+                //连接数据库
+                if (this._docDataBase.connectDataBase())
+                {
+                    //删除字典项
+                    if (docIds.Length > 0)
+                    {
+                        YParameters par = new YParameters();
+                        string ids = "@id0";
+                        par.add("@id0", docIds[0]);
+                        for (int i = 1; i < docIds.Length; i++)
+                        {
+                            ids += ",@id" + i.ToString();
+                            par.add("@id" + i.ToString(),docIds[i]);
+                        }
+
+                        //删除当前机构
+                        string sql = "DELETE FROM DOC_DOCUMENT WHERE ID IN (" + ids + ")";
+                        
+                        
+                        if (this._docDataBase.executeSqlWithOutDs(sql, par) < 0)
+                        {
+                            bRet = false;
+                        }
+                    }
+                }
+                else
+                {
+                    this._errorMessage = "连接数据库出错！错误信息[" + this._docDataBase.errorText + "]";
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                this._docDataBase.disconnectDataBase();
+            }
+
+            return bRet;
+        }
     }
 }

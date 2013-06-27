@@ -76,6 +76,25 @@
         }
 
         /*!
+        * \brief
+        * 删除文档。
+        * 作者：董帅 创建时间：2013-6-27 22:29:26
+        */
+        function deleteDocuments()
+        {
+            //判断选中
+            if ($("input:checked[type='checkbox'][name='chkDocument']").length > 0)
+            {
+                return confirm("确认要删除选中的文档？");
+            }
+            else
+            {
+                alert("请选中要删除的文档！");
+                return false;
+            }
+        }
+
+        /*!
          * \brief
          * 返回上级目录。
          */
@@ -134,7 +153,7 @@
                 <div style="width:200px;margin-left:auto;margin-top:0px;margin-right:0px">
                     <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="javascript:addDocument();">新增</a>
                     <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="javascript:editDocumentInfo();">修改</a>
-                    <a id="A1" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel',plain:true" onclick="javascript:return deleteDataDictionarys();" runat="server">删除</a>
+                    <a id="A1" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel',plain:true" onclick="javascript:return deleteDocuments();" runat="server" onserverclick="butDeleteDocuments_Click">删除</a>
                 </div>
             </div>
 			<div data-options="region:'center',border:true" style="padding:1px;background-color:#EEF5FD">
