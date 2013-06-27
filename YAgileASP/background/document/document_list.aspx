@@ -51,6 +51,15 @@
         }
 
         /*!
+        * \brief
+        * 新增文档。
+        */
+        function addDocument()
+        {
+            window.parent.popupsWindow("#popups", "新增文档", 1024, 600, "document/document_edit.aspx?parentId=" + +$("#hidParentId").val(), "icon-add", true, true);
+        }
+
+        /*!
          * \brief
          * 返回上级目录。
          */
@@ -105,7 +114,13 @@
     </div>
     <div id="center" region="center" title="<%=_catalogName%>" iconCls="icon-folder" style="padding:1px;background-color:#EEF5FD">
         <div class="easyui-layout" data-options="fit:true">
-			<div data-options="region:'north',split:false,border:true" style="height:50px;padding:1px;background-color:#EEF5FD"></div>
+			<div data-options="region:'north',split:false,border:true" style="height:30px;padding:1px;background-color:#EEF5FD">
+                <div style="width:200px;margin-left:auto;margin-top:0px;margin-right:0px">
+                    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="javascript:addDocument();">新增</a>
+                    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="javascript:editDataDictionary();">修改</a>
+                    <a id="A1" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel',plain:true" onclick="javascript:return deleteDataDictionarys();" runat="server">删除</a>
+                </div>
+            </div>
 			<div data-options="region:'center',border:true" style="padding:1px;background-color:#EEF5FD"></div>
             <div data-options="region:'south',split:false,border:true" style="height:30px;text-align:center;padding:1px;background-color:#EEF5FD">
                 <cc1:YPagerControl ID="YPagerControl1" runat="server" />
