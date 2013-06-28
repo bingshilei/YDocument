@@ -38,6 +38,9 @@ namespace YAgileASP.background.document
                                 this.txtDocumentTitle.InnerText = document.title;
                                 this.txtUserName.InnerText = document.user.name;
                                 this.txtCreateTime.InnerText = document.createTime.ToString("yyyy-MM-dd HH:mm:ss");
+                                this.hidHtmlText.Value = document.html;
+                                this.hidPlanText.Value = document.text;
+                                this.documentEditor.Value = document.html;
                             }
                             else
                             {
@@ -67,11 +70,39 @@ namespace YAgileASP.background.document
         /// <param name="e"></param>
         protected void butSave_Click(object sender, EventArgs e)
         {
-        }
+            try
+            {
+                //获取配置文件路径。
+                string configFile = AppDomain.CurrentDomain.BaseDirectory.ToString() + SystemConfig.databaseConfigFileName;
 
-        protected void Timer1_Tick(object sender, EventArgs e)
-        {
-            this.txtDocumentTitle.InnerText = this.hidPlanText.Value;
+                //创建操作对象
+                DocOper docOper = DocOper.createDocOper(configFile, SystemConfig.databaseConfigNodeName, SystemConfig.configFileKey);
+                if (docOper != null)
+                {
+                    if (!string.IsNullOrEmpty(this.hidDocumentId.Value))
+                    {
+                        //修改
+                        if (docOper.changeDocument(Convert.ToInt32(this.hidDocumentId.Value), this.hidHtmlText.Value, this.hidPlanText.Value))
+                        {
+                            YMessageBox.showAndResponseScript(this, "保存成功！", "", "window.parent.closePopupsWindow('#popups');");
+                        }
+                        else
+                        {
+                            YMessageBox.show(this, "保存失败！错误信息：[" + docOper.errorMessage + "]");
+                            return;
+                        }
+                    }
+                }
+                else
+                {
+                    YMessageBox.show(this, "创建数据库操作对象失败！");
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                YMessageBox.show(this, "程序异常！错误信息[" + ex.Message + "]");
+            }
         }
     }
 }

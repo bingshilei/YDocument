@@ -944,6 +944,70 @@ namespace YLR.YDocumentDB
         }
 
         /// <summary>
+        /// 修改文档内容。
+        /// </summary>
+        /// <param name="id">文档id</param>
+        /// <param name="htmlText">带格式的文档内容。</param>
+        /// <param name="planText">纯文本的文档内容。</param>
+        /// <returns>成功返回true，否则返回false。</returns>
+        public bool changeDocument(int id,string htmlText,string planText)
+        {
+            bool bRet = false; //返回值
+
+            try
+            {
+                if (this._docDataBase != null)
+                {
+                    //连接数据库
+                    if (this._docDataBase.connectDataBase())
+                    {
+                        //sql语句
+                        string sql = "";
+                        YParameters par = new YParameters();
+                        par.add("@documentId", id);
+                        par.add("@htmlText", htmlText);
+                        par.add("@planText", planText);
+
+                        sql = "UPDATE DOC_DOCUMENT SET HTML = @htmlText,TEXT = @planText WHERE ID = @documentId";
+
+                        int retCount = this._docDataBase.executeSqlWithOutDs(sql, par);
+                        if (retCount == 1)
+                        {
+                            bRet = true;
+                        }
+                        else
+                        {
+                            this._errorMessage = "更新数据失败！";
+                            if (retCount != 1)
+                            {
+                                this._errorMessage += "错误信息[" + this._docDataBase.errorText + "]";
+                            }
+                        }
+                    }
+                    else
+                    {
+                        this._errorMessage = "连接数据库出错！错误信息[" + this._docDataBase.errorText + "]";
+                    }
+
+                }
+                else
+                {
+                    this._errorMessage = "未设置数据库实例！";
+                }
+            }
+            catch (Exception ex)
+            {
+                this._errorMessage = ex.Message;
+            }
+            finally
+            {
+                this._docDataBase.disconnectDataBase();
+            }
+
+            return bRet;
+        }
+
+        /// <summary>
         /// 删除指定的文档。
         /// 作者：董帅 创建时间：2013-6-27 22:31:54
         /// </summary>

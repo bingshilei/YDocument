@@ -25,6 +25,11 @@
     <script src="../../ueditor/ueditor.config.js" type="text/javascript"></script>
 
     <script type="text/javascript">
+        function saveDocument()
+        {
+            $("#hidHtmlText").val(editor.getContent());
+            $("#hidPlanText").val(editor.getPlainTxt());
+        }
         /*!
         * \brief
         * 动态调整layout。
@@ -39,6 +44,13 @@
                 $('form#form1').layout();
             });
         });
+
+        $(document).ready(function ()
+        {
+            alert($("#documentEditor").val());
+            var editor = new baidu.editor.ui.Editor();
+            editor.render("documentEditor");
+        }); 
     </script>
 </head>
 <body style="width:100%;margin:0px;background-color:#EEF5FD;">
@@ -58,34 +70,17 @@
             <td style="width:300px"><span id="txtCreateTime" name="txtCreateTime" runat="server" style="width:300px"></span></td>
         </tr>
         <tr>
-            <td id="documentEditor" colspan="4" runat="server" style="width:980px;height:800px"></td>
+            <td  colspan="4" style="width:980px;height:800px">
+                <textarea id="documentEditor" runat="server" style="width:980px;height:800px"></textarea>
+            </td>
         </tr>
     </table>
-    <script type="text/javascript">
-        var editor = new baidu.editor.ui.Editor();
-        editor.addListener('contentChange', function ()
-        {
-            $("#hidHtmlText").val(editor.getContent());
-            $("#hidPlanText").val(editor.getPlainTxt());
-        });
-        editor.render("documentEditor");  
-    </script>
-    
-    <asp:ScriptManager ID="ScriptManager1" runat="server">
-    </asp:ScriptManager>
-    <asp:Timer ID="Timer1" runat="server" Interval="10000" ontick="Timer1_Tick">
-    </asp:Timer>
-    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-    <ContentTemplate>
-        <input type="hidden" id="hidHtmlText" name="hidHtmlText" runat="server" />
-        <input type="hidden" id="hidPlanText" name="hidPlanText" runat="server" />
-    </ContentTemplate>
-    </asp:UpdatePanel>
     </div>
-    
+    <input type="hidden" id="hidHtmlText" name="hidHtmlText" runat="server" />
+    <input type="hidden" id="hidPlanText" name="hidPlanText" runat="server" />
     <div region="south" border="true" style="height:30px;background:#D9E5FD;padding:1px;">
 	    <div style="width:170px;margin-left:auto;margin-right:5px">
-            <a id="A1" href="#" class="easyui-linkbutton" iconCls="icon-save" runat="server" onserverclick="butSave_Click" >保存</a>
+            <a id="A1" href="#" class="easyui-linkbutton" iconCls="icon-save" runat="server" onclick="javascript:saveDocument();" onserverclick="butSave_Click" >保存</a>
             <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:window.parent.closePopupsWindow('#popups')">取消</a>
         </div>
 	</div>
