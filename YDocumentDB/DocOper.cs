@@ -141,7 +141,7 @@ namespace YLR.YDocumentDB
                                     }
                                 case DataBaseType.SQLite:
                                     {
-                                        sql = "INSERT INTO DOC_CATALOG (NAME,USERID,PARENTID,VALUE) VALUES (@catalogName,@userId,@parentId);SELECT LAST_INSERT_ROWID() AS id;";
+                                        sql = "INSERT INTO DOC_CATALOG (NAME,USERID,PARENTID) VALUES (@catalogName,@userId,@parentId);SELECT LAST_INSERT_ROWID() AS id;";
                                         break;
                                     }
                                 default:
@@ -650,7 +650,7 @@ namespace YLR.YDocumentDB
                                     }
                                 case DataBaseType.SQLite:
                                     {
-                                        sql = "INSERT INTO DOC_DOCUMENT (TITLE,USERID,CATALOGID,VALUE) VALUES (@documentTitle,@userId,@catalogId);SELECT LAST_INSERT_ROWID() AS id;";
+                                        sql = "INSERT INTO DOC_DOCUMENT (TITLE,USERID,CATALOGID) VALUES (@documentTitle,@userId,@catalogId);SELECT LAST_INSERT_ROWID() AS id;";
                                         break;
                                     }
                                 default:
