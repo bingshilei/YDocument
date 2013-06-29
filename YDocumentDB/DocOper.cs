@@ -747,6 +747,16 @@ namespace YLR.YDocumentDB
                         document.user = orgOper.getUser(userId, this._docDataBase);
                     }
                 }
+
+                if (!r.IsNull("HTML"))
+                {
+                    document.html = r["HTML"].ToString();
+                }
+
+                if (!r.IsNull("TEXT"))
+                {
+                    document.text = r["TEXT"].ToString();
+                }
             }
 
             return document;

@@ -25,11 +25,14 @@
     <script src="../../ueditor/ueditor.config.js" type="text/javascript"></script>
 
     <script type="text/javascript">
+        var editor;
+
         function saveDocument()
         {
             $("#hidHtmlText").val(editor.getContent());
             $("#hidPlanText").val(editor.getPlainTxt());
         }
+
         /*!
         * \brief
         * 动态调整layout。
@@ -47,8 +50,7 @@
 
         $(document).ready(function ()
         {
-            alert($("#documentEditor").val());
-            var editor = new baidu.editor.ui.Editor();
+            editor = new baidu.editor.ui.Editor();
             editor.render("documentEditor");
         }); 
     </script>
