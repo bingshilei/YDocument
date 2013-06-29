@@ -73,6 +73,7 @@
     <Content Include="background\document\documentInfo_edit.aspx" />
     <Content Include="background\document\document_edit.aspx" />
     <Content Include="background\document\document_list.aspx" />
+    <Content Include="background\document\document_view.aspx" />
     <Content Include="background\images\login\login.png" />
     <Content Include="background\images\login\userName.png" />
     <Content Include="background\images\login\userPassword.png" />
@@ -624,6 +625,13 @@
     </Compile>
     <Compile Include="background\document\document_list.aspx.designer.cs">
       <DependentUpon>document_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="background\document\document_view.aspx.cs">
+      <DependentUpon>document_view.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="background\document\document_view.aspx.designer.cs">
+      <DependentUpon>document_view.aspx</DependentUpon>
     </Compile>
     <Compile Include="background\mainPage.aspx.cs">
       <DependentUpon>mainPage.aspx</DependentUpon>

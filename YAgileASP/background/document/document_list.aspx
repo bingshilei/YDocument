@@ -189,7 +189,7 @@
                     <tr class="tableBody1">
                         <td style="text-align:center;"><input type="checkbox" value="<%#Eval("ID") %>" name="chkDocument" /></td>
                         <td style="width:auto">
-                            <a href="dataDictionary_list.aspx?parentId=<%#Eval("ID") %>" class="easyui-linkbutton" data-options="iconCls:'icon-doc',plain:true" id="<%#Eval("ID") %>" style="width:99%" ><%#Eval("TITLE")%></a>
+                            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-doc',plain:true" onclick="javascript:window.parent.popupsWindow('#popups', '查看文档', 1024, 600, 'document/document_view.aspx?id=<%#Eval("ID") %>', 'icon-doc', true, true);"" style="width:99%" ><%#Eval("TITLE")%></a>
                         </td>
                         <td style="text-align:center">
                             <%#Eval("user.name")%>
@@ -206,7 +206,7 @@
                     <tr class="tableBody2">
                         <td style="text-align:center;"><input type="checkbox" value="<%#Eval("ID") %>" name="chkDocument" /></td>
                         <td style="width:auto">
-                            <a href="dataDictionary_list.aspx?parentId=<%#Eval("ID") %>" class="easyui-linkbutton" data-options="iconCls:'icon-doc',plain:true" id="<%#Eval("ID") %>" style="width:99%" ><%#Eval("TITLE")%></a>
+                            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-doc',plain:true" onclick="javascript:window.parent.popupsWindow('#popups', '查看文档', 1024, 600, 'document/document_view.aspx?id=<%#Eval("ID") %>', 'icon-doc', true, true);"" style="width:99%" ><%#Eval("TITLE")%></a>
                         </td>
                         <td style="text-align:center">
                             <%#Eval("user.name")%>
