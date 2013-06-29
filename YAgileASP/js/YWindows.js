@@ -35,7 +35,11 @@ function popupsWindow(windowId,titleName,windowWidth,windowHeight,pageUrl,window
         modal: isModal,
         closed: false,
         cache:false,
-        draggable:false
+        draggable: false,
+        onClose: function ()
+        {
+            $("#popupsIframe").attr("src", "");
+        }
     });
     $("#popupsIframe").attr("src", pageUrl);
 }
@@ -49,5 +53,5 @@ function popupsWindow(windowId,titleName,windowWidth,windowHeight,pageUrl,window
 function closePopupsWindow(windowId)
 {
     $(windowId).dialog('close');
-    $("#popupsIframe").attr("src", "");
+    //$("#popupsIframe").attr("src", "");
 }
