@@ -35,7 +35,6 @@ namespace YAgileASP.background.sys
                     MD5Encrypt md5Encrypt = new MD5Encrypt();
                     if (user.logPassword == md5Encrypt.GetMD5(this.pswOldPsw.Value))
                     {
-                        user.logPassword = md5Encrypt.GetMD5(this.pswNewPsw1.Value);
                         OrgOperater orgDB = new OrgOperater();
 
                         //获取配置文件路径。
@@ -55,6 +54,7 @@ namespace YAgileASP.background.sys
                             if (bRet)
                             {
                                 //更新成功。
+                                user.logPassword = md5Encrypt.GetMD5(this.pswNewPsw1.Value);
                                 YMessageBox.showAndResponseScript(this, "修改用户密码成功！", "", "window.parent.closePopupsWindow('#popups');");
                             }
                             else
